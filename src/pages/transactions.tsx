@@ -6,8 +6,8 @@ import '@/flow/config'
 export default function Home() {
   return (
     <Layout>
-      <TitledCard title='Accounts'>
-        content
+      <TitledCard title='Transactions'>
+        Transactions
       </TitledCard>
     </Layout>
   )
