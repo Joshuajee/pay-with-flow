@@ -1,5 +1,4 @@
 import { ReactNode } from 'react';
-import Footer from '../navigation/Footer';
 import Navbar from '../navigation/Navbar';
 import Container from './Container';
 import SideNav from '../navigation/SideNav';

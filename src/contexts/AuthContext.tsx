@@ -25,7 +25,9 @@ export default function AuthProvider({ children } : IProps) {
   const [profileExists, setProfileExists] = useState(false);
   const [balance, setBalance] = useState(0)
 
-  //useEffect(() => fcl.currentUser.subscribe(setUser), []);
+  useEffect(() => {
+    fcl.currentUser.subscribe(setUser)
+  }, []);
 
   const loadProfile = useCallback(async () => {
     if (currentUser?.loggedIn) {
@@ -47,7 +49,7 @@ export default function AuthProvider({ children } : IProps) {
   }, [currentUser, userProfile, loadProfile]);
 
   const logOut = async () => {
-    await fcl.unauthenticate();
+    fcl.unauthenticate();
     setUser({ addr: undefined, loggedIn: false });
     setProfile(null);
     setProfileExists(false);

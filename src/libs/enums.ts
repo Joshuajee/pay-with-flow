@@ -1,10 +1,3 @@
-export enum LINKS {
-    DASHBOARD =  "/account",
-    TRANSACTIONS = "/account/transactions",
-    INTEGRATION = "/account/integration",
-}
-
-
 export enum AUTH_ROUTES {
     LOGIN = "/auth/login",
     CREATE_ACCOUNT = "/auth/create-account",
@@ -20,10 +13,6 @@ export enum ACCOUNT_ROUTES {
 
 
 
-
-
-
-
 // APIs
 export enum AUTH_APIS {
     LOGIN = "/api/auth/login",
@@ -32,6 +21,3 @@ export enum AUTH_APIS {
     RESET = "/api/auth/reset",
 }
 
-export const PROJECT_NAME = "Flow Merchant" 
-export const RESET_TIME = 3600000
-export const DOMAIN = String(process.env.DOMAIN)

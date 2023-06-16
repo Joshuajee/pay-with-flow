@@ -1,6 +1,6 @@
-import Card from '@/components/ui/utils/Card'
-import Layout from '@/components/ui/utils/Layout'
-import TitledCard from '@/components/ui/utils/TitledCard'
+import Card from '@/components/utils/Card'
+import Layout from '@/components/utils/Layout'
+import TitledCard from '@/components/utils/TitledCard'
 import '@/flow/config'
 
 export default function Home() {
