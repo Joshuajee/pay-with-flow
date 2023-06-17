@@ -1,13 +1,19 @@
-import { ReactNode } from 'react';
+import { ReactNode, useEffect } from 'react';
 import Navbar from '../navigation/Navbar';
 import Container from './Container';
 import SideNav from '../navigation/SideNav';
+import { LOCAL_STORAGE } from '@/libs/enums';
 
 interface IProps {
-    children: ReactNode
+    children: ReactNode;
+    nonce: string;
 }
 
-const Layout = ({children} : IProps) => {
+const Layout = ({children, nonce} : IProps) => {
+
+    useEffect(() => {
+        localStorage.setItem(LOCAL_STORAGE.NONCE, JSON.parse(nonce))
+    }, [])
 
     return (
         <div className={`bg-[#22262E]`}>

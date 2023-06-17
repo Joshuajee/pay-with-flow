@@ -14,10 +14,10 @@ export enum ACCOUNT_ROUTES {
 
 
 // APIs
-export enum AUTH_APIS {
-    LOGIN = "/api/auth/login",
-    SIGN_UP = "/api/auth/create",
-    FORGOT = "/api/auth/forgot",
-    RESET = "/api/auth/reset",
+export enum API_ROUTES {
+    VERIFY = "/api/verify",
 }
 
+export enum LOCAL_STORAGE {
+    NONCE = "nonce"
+}

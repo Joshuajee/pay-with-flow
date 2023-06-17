@@ -1,4 +1,6 @@
 import prisma from "@/libs/prisma"
+import { User } from "@prisma/client";
+import crypto from "crypto";
 
 export const sessionCookie = (cookieName: string = "auth", age: number = 3600 * 24 * 7) => {
 
@@ -16,11 +18,16 @@ export const sessionCookie = (cookieName: string = "auth", age: number = 3600 * 
 }
 
 
-export const createSession = async (user: any, req: any) => {
+export const createUserSession = async (user: User, req: any) => {
   await req.session.destroy();
-  user.password === undefined
-  user.email_otp === undefined
   req.session.user = user
+  await req.session.save();
+}
+
+export const createNonceSession = async (req: any) => {
+  await req.session.destroy();
+  const nonce = crypto.randomBytes(32).toString('hex');
+  req.session.nonce = nonce
   await req.session.save();
 }
 
@@ -29,119 +36,58 @@ export const getUserFromSession = (req: any) =>  {
 }
 
 
-export const validateUser = async (req: any) => {
+export const validateUser = async (req: any) : Promise<{user: User | null, nonce: string | null }> => {
 
-  const session = req.session.user 
+  const userSession = req.session.user
+  let nonce = req.session.nonce || null
 
-  if (!session) return ({redirect: '/auth/login'})
+  if (!nonce && !userSession) nonce = await createNonceSession(req)
+
+  if (!userSession) return { user: null, nonce }
 
   try {
 
     const user = await prisma.user.findUnique({
       where: {
-        email: session.email
-      },
-      select: {
-        email: true,
-        firstName: true,
-        lastName: true,
-        emailVerified: true,
-        createdAt: true,
-        updatedAt: true,
-        workspaces: true,
-      }, 
-    })
-
-    if (user) return user
-
-    const member = await prisma.member.findFirst({
-      where: {
-        email: session.email,
-        workspaceId: session.workspaceId 
+        address: userSession.address
       }
     })
 
-    const workspaces = await prisma.workspace.findFirst({
-      where: {
-        id: session.workspaceId 
-      }
-    })
 
-    return { ...member, firstName: member?.name, workspaces:[workspaces]}
+    return { user, nonce }
 
   } catch (e) {
     console.error(e)  
   }
 
-  return ({redirect: '/auth/login'})
+  return { user: null, nonce }
 
 }
 
 
-export const validateUserApi = async (req: any, workspaceId: number) => {
+export const validateUserApi = async (req: any) : Promise<{user: User | null, nonce: string | null }>  => {
 
-  const session = req.session.user 
+  const userSession = req.session.user
+  const nonce = req.session.nonce || null
 
-  if (!session) return false
 
   try {
 
     const user = await prisma.user.findUnique(
       {
         where: {
-          email: session.email
-        },
-        select: {
-          id: true,
-          firstName: true,
-          lastName: true,
-          email: true,
-          workspaces: {
-            where: {
-              id: workspaceId
-            }
-          },
-        }, 
+          address: userSession.address
+        }
       }
     )
 
-    if (user) return user
-
-    const member = await prisma.member.findFirst({
-      where: {
-        email: session.email,
-        workspaceId: session.workspaceId 
-      }
-    })
-
-    const workspaces = await prisma.workspace.findFirst({
-      where: {
-        id: session.workspaceId 
-      }
-    })
-
-    return { ...member, firstName: member?.name, workspaces:[workspaces]}
+    
+    return { user, nonce }
 
   } catch (e) {
   
   }
 
-  return false
-
-}
-
-
-
-
-export const sessionRedirects = (destination: string) => { 
-  
-  return (
-    {
-      redirect: {
-        permanent: false,
-        destination,
-      }
-    }
-  )
+  return { user: null, nonce }
 
 }

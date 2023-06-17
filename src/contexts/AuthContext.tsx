@@ -1,15 +1,10 @@
 import * as fcl from "@onflow/fcl";
-import {
-  createContext,
-  ReactNode,
-  useCallback,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
+import {  createContext,  ReactNode,  useCallback,  useContext, useEffect,  useState, } from "react";
+import axios from 'axios'
+import { API_ROUTES } from "@/libs/enums";
+import { toast } from "react-toastify";
 
-
-export const AuthContext = createContext({});
+export const AuthContext = createContext<any>({});
 
 export const useAuth = (): any => useContext(AuthContext);
 
@@ -55,9 +50,31 @@ export default function AuthProvider({ children } : IProps) {
     setProfileExists(false);
   };
 
-  const logIn = () => {
-    fcl.logIn();
-  };
+
+
+  const logIn = async () => {
+    let res = await fcl.authenticate();
+  
+    const accountProofService = res.services.find((services: any) => services.type === 'account-proof' );
+
+    if (accountProofService) {
+
+      try {
+        const response = await axios.post(
+          API_ROUTES.VERIFY, 
+          { data: JSON.stringify(accountProofService.data) }
+        )
+        console.log(response.data)
+      } catch (e) {
+        if (axios.isAxiosError(e)) {
+          toast.error(e?.response?.data?.message)
+        } else {
+          toast.error("An error occurred")
+          console.error(e);
+        }
+      }
+    }
+  }
 
   const signUp = () => {
     fcl.signUp();
@@ -67,7 +84,6 @@ export default function AuthProvider({ children } : IProps) {
     currentUser,
     userProfile,
     profileExists,
-    balance,
     logOut,
     logIn,
     signUp,

@@ -13,25 +13,10 @@ datasource db {
 
 model User {
   id              Int       @id @default(autoincrement())
-  email           String    @unique
-  firstName       String    
-  lastName        String    
-  password        String
-  emailVerified   Boolean   @default(false) @map(name: "email_verified")
-  emailToken      String?   @map(name: "email_token")
-  resetToken      String?   @map(name: "reset_token")
-  tokenExpireAt   DateTime  @map(name: "token_expire_at")
-  accounts        Account[]
+  address         String    @unique
+  firstName       String?    
+  lastName        String?    
   createdAt       DateTime  @default(now()) @map(name: "created_at")
   updatedAt       DateTime  @updatedAt @map(name: "updated_at")
 }
 
-model Account {
-  id            Int  @id @default(autoincrement())
-  name          String
-  description   String
-  ownerId       Int
-  owner         User @relation(fields: [ownerId], references: [id])
-  createdAt     DateTime  @default(now()) @map(name: "created_at")
-  updatedAt     DateTime  @updatedAt @map(name: "updated_at")
-}

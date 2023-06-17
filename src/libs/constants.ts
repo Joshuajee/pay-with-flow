@@ -1,16 +1,10 @@
 export enum LINKS {
-    DASHBOARD =  "/account",
-    TRANSACTIONS = "/account/transactions",
-    INTEGRATION = "/account/integration",
+    DASHBOARD =  "/",
+    TRANSACTIONS = "/transactions",
+    INTEGRATION = "/integration",
+    PROFILE = "/profile"
 }
 
-
-export enum AUTH_ROUTES {
-    LOGIN = "/auth/login",
-    CREATE_ACCOUNT = "/auth/create-account",
-    FORGOT = "/auth/forgot",
-    RESET = "/auth/reset",
-}
 
 export enum ACCOUNT_ROUTES {
     DASHBOARD = "/account/",
