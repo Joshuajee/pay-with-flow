@@ -84,6 +84,7 @@ export default function AuthProvider({ children } : IProps) {
     currentUser,
     userProfile,
     profileExists,
+    isLoggedIn: currentUser.loggedIn,
     logOut,
     logIn,
     signUp,

@@ -38,10 +38,13 @@ export const getUserFromSession = (req: any) =>  {
 
 export const validateUser = async (req: any) : Promise<{user: User | null, nonce: string | null }> => {
 
-  const userSession = req.session.user
+  const userSession = req.session.user || null
   let nonce = req.session.nonce || null
 
-  if (!nonce && !userSession) nonce = await createNonceSession(req)
+  if (!nonce && !userSession) {
+    await createNonceSession(req)
+    nonce = req.session.nonce
+  }
 
   if (!userSession) return { user: null, nonce }
 
@@ -67,7 +70,7 @@ export const validateUser = async (req: any) : Promise<{user: User | null, nonce
 
 export const validateUserApi = async (req: any) : Promise<{user: User | null, nonce: string | null }>  => {
 
-  const userSession = req.session.user
+  const userSession = req.session.user || null
   const nonce = req.session.nonce || null
 
 

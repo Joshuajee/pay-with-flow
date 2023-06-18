@@ -7,6 +7,7 @@ import TokenControl from '@/components/utils/TokenControl'
 import LoadingButton from '@/components/utils/LoadingButton'
 import LoadingButtonSM from '@/components/utils/LoadingButtonSM'
 import { useState } from 'react'
+import CreatePaymentForm from '@/components/modals/CreatePaymentForm'
 
 
 export const getServerSideProps = withIronSessionSsr(async({req}) => {
@@ -34,6 +35,10 @@ export default function Home(props: IProps) {
 
   const [open, setOpen] = useState(false)
 
+  const handleClose = () => {
+    setOpen(false)
+  }
+
   return (
     <Layout nonce={props.nonce}>
       <AuthCard title='Dashboard'>
@@ -48,7 +53,7 @@ export default function Home(props: IProps) {
 
           <h3 className='text-xl mb-4'>Supported Tokens</h3>
 
-          <div className='grid grid-cols-1 md:grid-cols-2 w-full  '>
+          <div className='grid grid-cols-1 md:grid-cols-2 w-full gap-2 '>
             <TokenControl />
             <TokenControl />
           </div>
@@ -56,6 +61,9 @@ export default function Home(props: IProps) {
         </>
 
       </AuthCard>
+
+      <CreatePaymentForm open={open} handleClose={handleClose} />
+
     </Layout>
   )
 }

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 
-type Verification = "email" | "password" | "text" | "slug" | "phone"
+type Verification = "email" | "password" | "text" | "slug" | "phone" | "number"
 
 const useInput = (verification: Verification, minLength?: number) => {
 
@@ -51,6 +51,14 @@ const useInput = (verification: Verification, minLength?: number) => {
                 break
             case "phone":
                 if (!(value as string)?.match(/^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?\s*$/)) {
+                    setError(true)
+                    setErrorMessage("Invalid phone number")
+                } else {
+                    setError(false)
+                    setErrorMessage("")
+                }
+            case "number":
+                if (Number(value) < 0) {
                     setError(true)
                     setErrorMessage("Invalid phone number")
                 } else {

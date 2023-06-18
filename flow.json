@@ -1,0 +1,24 @@
+{
+	"contracts": {
+		"FlowMerchant": "./flow/cadence/contracts/FlowMerchant.cdc"
+	},
+	"networks": {
+		"emulator": "127.0.0.1:3569",
+		"mainnet": "access.mainnet.nodes.onflow.org:9000",
+		"sandboxnet": "access.sandboxnet.nodes.onflow.org:9000",
+		"testnet": "access.devnet.nodes.onflow.org:9000"
+	},
+	"accounts": {
+		"emulator-account": {
+			"address": "f8d6e0586b0a20c7",
+			"key": "e5869c578b3af289f700bbc6e04f1c23febb42c2225c13da3f09e5d9849b406e"
+		}
+	},
+	"deployments": {
+		"emulator": {
+			"emulator-account": [
+				"FlowMerchant"
+			]
+		}
+	}
+}

@@ -2,19 +2,28 @@ import { useAuth } from "@/contexts/AuthContext"
 //import createProfile from "@/flow/transactions/accountSetUp"
 import { useState } from "react"
 import { toast } from "react-toastify"
+import ModalWrapper from "./ModalWrapper"
+import Input from "../utils/Input"
+import LoadingButton from "../utils/LoadingButton"
+import useInput from "@/hooks/useInput"
 
 
 interface IProps {
+    open: boolean
     handleClose: () => void
 }
 
-const CreateProfileForm = ({handleClose} : IProps) => {
+const CreateProfileForm = ({open, handleClose} : IProps) => {
 
-    const [name, setName] = useState("")
+    const name = useInput("text", 3)
+
+    const [loading, setLoading] = useState(false)
 
     const { loadProfile } = useAuth()
 
     const create = async() => {
+
+        setLoading(true)
     
         try {
             //await createProfile(name, loadProfile)
@@ -24,23 +33,28 @@ const CreateProfileForm = ({handleClose} : IProps) => {
             console.error(e)
             toast.error("Error creating profile")
         }
+
+        setLoading(false)
     }
 
-    const disabled = name.length < 3 ? true : false
+    const disabled = name.error
 
     return (
-        <div className="flex flex-col justify-center">
+        <ModalWrapper title={"Create Payment Link"} open={open} handleClose={handleClose}>
+        
+            <div className="flex flex-col justify-center">
 
-            <div className="mb-4">
-                <label className="block mb-2 text-sm font-medium"> Username </label>
-                <input name="username" id={"username"} type="text" autoComplete="off" value={name} onChange={(e) => setName(e.target.value)} className="bg-blue-50 border outline-none text-sm rounded-lg focus:ring-blue-400 focus:border-blue-400 block w-full p-2.5" placeholder={"Enter Username"} />
+                <div className="mb-4">
+                    <Input type="number" label="Merchant Name" value={name.value} onChange={name.setValue}/>
+                </div>
+
+                <LoadingButton disabled={disabled} loading={loading} onClick={create}>
+                    Create Link
+                </LoadingButton>
+
             </div>
 
-            <button disabled={disabled} onClick={create} className={`${disabled ? 'bg-gray-500' : 'bg-blue-900 hover:bg-blue-800 '} w-full py-3 text-white rounded-lg`}>
-                Create Profile
-            </button>
-
-        </div>
+        </ModalWrapper>
     )
 }
 
