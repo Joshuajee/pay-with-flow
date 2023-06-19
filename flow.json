@@ -1,6 +1,7 @@
 {
 	"contracts": {
-		"FlowMerchant": "./flow/cadence/contracts/FlowMerchant.cdc"
+		"TUSD": "./flow/cadence/contracts/TestTokens/TUSD.cdc",
+		"TGBP": "./flow/cadence/contracts/TestTokens/TGBP.cdc"
 	},
 	"networks": {
 		"emulator": "127.0.0.1:3569",
@@ -17,7 +18,8 @@
 	"deployments": {
 		"emulator": {
 			"emulator-account": [
-				"FlowMerchant"
+				"TUSD",
+				"TGBP"
 			]
 		}
 	}

@@ -45,8 +45,6 @@ const AuthCard = ({ children, title } :IProps) => {
                 (profileExists && isLoggedIn) && children 
             }
 
-            {children}
-
             <CreateProfileForm open={open} handleClose={handleClose} />
 
         </Card>

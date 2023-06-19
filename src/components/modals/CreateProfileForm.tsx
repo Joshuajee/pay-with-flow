@@ -6,6 +6,7 @@ import ModalWrapper from "./ModalWrapper"
 import Input from "../utils/Input"
 import LoadingButton from "../utils/LoadingButton"
 import useInput from "@/hooks/useInput"
+import createProfile from "@/flow/transactions/createProfile"
 
 
 interface IProps {
@@ -19,14 +20,12 @@ const CreateProfileForm = ({open, handleClose} : IProps) => {
 
     const [loading, setLoading] = useState(false)
 
-    const { loadProfile } = useAuth()
-
     const create = async() => {
 
         setLoading(true)
     
         try {
-            //await createProfile(name, loadProfile)
+            await createProfile("John")
             toast.success("Profile Created Successfully")
             handleClose()
         } catch (e) {
@@ -40,16 +39,16 @@ const CreateProfileForm = ({open, handleClose} : IProps) => {
     const disabled = name.error
 
     return (
-        <ModalWrapper title={"Create Payment Link"} open={open} handleClose={handleClose}>
+        <ModalWrapper title={"Create Profile"} open={open} handleClose={handleClose}>
         
             <div className="flex flex-col justify-center">
 
                 <div className="mb-4">
-                    <Input type="number" label="Merchant Name" value={name.value} onChange={name.setValue}/>
+                    <Input type="text" label="Merchant Name" value={name.value} onChange={name.setValue}/>
                 </div>
 
                 <LoadingButton disabled={disabled} loading={loading} onClick={create}>
-                    Create Link
+                    Create Profile
                 </LoadingButton>
 
             </div>

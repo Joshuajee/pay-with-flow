@@ -3,6 +3,7 @@ import {  createContext,  ReactNode,  useCallback,  useContext, useEffect,  useS
 import axios from 'axios'
 import { API_ROUTES } from "@/libs/enums";
 import { toast } from "react-toastify";
+import getProfile from "@/flow/scripts/getProfile";
 
 export const AuthContext = createContext<any>({});
 
@@ -27,9 +28,9 @@ export default function AuthProvider({ children } : IProps) {
   const loadProfile = useCallback(async () => {
     if (currentUser?.loggedIn) {
       try {
-        // const profile = await getAccount(currentUser?.addr)
-        // setProfile(profile ?? null);
-        // setProfileExists(profile !== null);
+        const profile = await getProfile(currentUser?.addr)
+        setProfile(profile ?? null);
+        setProfileExists(profile !== null);
       } catch (e) {
         console.error(e)
       }
