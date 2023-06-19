@@ -23,3 +23,8 @@ export const navs = [
 
 export const contract = process.env.NEXT_PUBLIC_CONTRACT_ACCT 
 export const contractName = "FlowMerchant"
+
+export const tokenLists = [
+    { name : 'USDC', value: "LINKS.DASHBOARD" },
+    { name : 'FLOW', value: "LINKS.PROFILE "},
+]

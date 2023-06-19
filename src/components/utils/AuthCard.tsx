@@ -1,6 +1,9 @@
-import { ReactNode, useContext } from "react"
+import { ReactNode, useContext, useState } from "react"
 import Card from "./Card";
 import { AuthContext } from "@/contexts/AuthContext";
+import ConnectionBtn from "./ConnectionBtn";
+import LoadingButton from "./LoadingButton";
+import CreateProfileForm from "../modals/CreateProfileForm";
 
 interface IProps {
     children: ReactNode;
@@ -9,26 +12,41 @@ interface IProps {
 
 const AuthCard = ({ children, title } :IProps) => {
 
-    const { currentUser, profileExists } = useContext(AuthContext)
+    const { isLoggedIn, profileExists } = useContext(AuthContext)
 
-    console.log({ currentUser, profileExists } )
+    const [open, setOpen] = useState(false)
+
+    const handleClose = () => {
+      setOpen(false)
+    }
+  
+
+    const createProfile = (
+        <div className="w-44">
+            <LoadingButton onClick={() => setOpen(true)}> Create Profile  </LoadingButton>
+        </div>
+    )
 
     return (
         <Card>
             <h2 className="text-xl font-semibold">{title}</h2>
 
             {
-                !profileExists || !currentUser && (
-                    <div>
-
+                (!profileExists || !isLoggedIn) && (
+                    <div className="flex justify-center items-center h-[90%]">
+                        {
+                            !isLoggedIn ?   <ConnectionBtn />   :   createProfile
+                        }
                     </div>
                 ) 
             }
 
             { 
-                (profileExists && currentUser)  && children 
+                (profileExists && isLoggedIn) && children 
             }
-            
+
+            <CreateProfileForm open={open} handleClose={handleClose} />
+
         </Card>
     )
 }
