@@ -7,6 +7,7 @@ import { LOCAL_STORAGE } from '@/libs/enums';
 interface IProps {
     children: ReactNode;
     nonce: string;
+    
 }
 
 const Layout = ({children, nonce} : IProps) => {

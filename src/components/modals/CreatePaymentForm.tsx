@@ -8,6 +8,9 @@ import LoadingButton from "../utils/LoadingButton";
 import Textarea from "../utils/Textarea";
 import Select from "../utils/Select";
 import { tokenFormat, tokenLists } from "@/libs/utils";
+import axios, { AxiosResponse } from "axios";
+import Alert from "../utils/Alert";
+import { PAYMENT_LINK } from "@/libs/constants";
 
 
 interface IProps {
@@ -17,9 +20,12 @@ interface IProps {
 
 const CreatePaymentForm = ({open, handleClose} : IProps) => {
 
+    const [link, setLink] = useState<string | null>(null)
 
     const [selectedToken, setSelectedToken] = useState(tokenLists[0].value)
+    
     const amount = useInput("number")
+    
     const narration = useInput("text", 0)
 
     const [loading, setLoading] = useState(false)
@@ -31,12 +37,29 @@ const CreatePaymentForm = ({open, handleClose} : IProps) => {
         setLoading(true)
 
         try {
-            //await createProfile(name, loadProfile)
-            toast.success("Profile Created Successfully")
-            handleClose()
+            
+            const body = { 
+                token: selectedToken, 
+                amount: amount.value, 
+                narration: narration.value 
+            }
+            
+            const res : AxiosResponse = await axios.post("/api/request-pay", body)
+            
+            const data  = res?.data
+
+            const { addressTo, tx_ref } = data?.data
+
+            setLink(`${PAYMENT_LINK}/${addressTo}/${tx_ref}`)
+
+            toast.success(data.message)
+
         } catch (e) {
-            console.error(e)
-            toast.error("Error creating profile")
+            if (axios.isAxiosError(e)) {
+                toast.error(e?.response?.data?.message)
+            } else {
+                console.error(e);
+            }
         }
 
         setLoading(false)
@@ -47,6 +70,15 @@ const CreatePaymentForm = ({open, handleClose} : IProps) => {
         <ModalWrapper title={"Create Payment Link"} open={open} handleClose={handleClose}>
 
             <div className="flex flex-col justify-center">
+
+                { link &&
+                    <div className="mb-4">
+                        <Alert type="success">
+                            <p>Copy the link and share with your customer </p>
+                            {link}
+                        </Alert>
+                    </div>
+                }
 
                 <div className="mb-4">
                     <Select id="token" name="token" lists={tokenLists} onChange={setSelectedToken} />

@@ -59,13 +59,11 @@ export default function AuthProvider({ children } : IProps) {
     const accountProofService = res.services.find((services: any) => services.type === 'account-proof' );
 
     if (accountProofService) {
-
       try {
-        const response = await axios.post(
+        await axios.post(
           API_ROUTES.VERIFY, 
           { data: JSON.stringify(accountProofService.data) }
         )
-        console.log(response.data)
       } catch (e) {
         if (axios.isAxiosError(e)) {
           toast.error(e?.response?.data?.message)

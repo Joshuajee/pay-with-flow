@@ -21,7 +21,6 @@ const getProfile = async (account: string | undefined) => {
           
         }
 
-
     `,
         args: (arg: any, t:any) => [arg(account, t.Address)],
     });
