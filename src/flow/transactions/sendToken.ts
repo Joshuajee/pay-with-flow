@@ -1,7 +1,7 @@
 import { contract } from "@/libs/utils";
 import * as fcl from "@onflow/fcl";
 
-const createProfile = async (name: string, callBack?: () => void) => {
+const sendToken = async (name: string, callBack?: () => void) => {
 
   const transactionId = await fcl.mutate({
     cadence: `
@@ -11,7 +11,7 @@ const createProfile = async (name: string, callBack?: () => void) => {
             prepare(acct: AuthAccount) {
       
               // Create a new empty Games
-              let profile <- FlowMerchant.createProfile(merchantName: "John", merchantAddress: acct.address )
+              let profile <- FlowMerchant.sendToken(merchantName: "John", merchantAddress: acct.address )
       
               // store the empty Account in account storage
               acct.save<@FlowMerchant.Profile>(<-profile, to: FlowMerchant.MerchantStoragePath)
@@ -33,11 +33,11 @@ const createProfile = async (name: string, callBack?: () => void) => {
 
   fcl.tx(transactionId).subscribe((res: any) => {
     if (res.status === 4) {
-      callBack?.()
+      //callBack()
     }
   });
 
 };
 
-export default createProfile
+export default sendToken
  

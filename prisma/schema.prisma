@@ -11,12 +11,48 @@ datasource db {
 }
 
 
+enum TransactionSource {
+  unknown
+  app
+  api
+}
+
+enum TransactionStatus {
+  pending
+  partial_payment
+  success
+  error
+  failed
+}
+
 model User {
   id              Int       @id @default(autoincrement())
   address         String    @unique
   firstName       String?    
-  lastName        String?    
+  lastName        String?   
+  email           String? 
+  transactions    Transaction[]
   createdAt       DateTime  @default(now()) @map(name: "created_at")
   updatedAt       DateTime  @updatedAt @map(name: "updated_at")
+}
+
+
+model Transaction {
+  id              Int       @id @default(autoincrement())
+  tx_ref          String?
+  addressTo       String    
+  addressFrom     String?
+  amount          Decimal?
+  amountPaid      Decimal? @map(name: "amount_paid")
+  narration       String?
+  source          TransactionSource @default(unknown)
+  status          TransactionStatus @default(pending)
+  userId          Int?
+  user            User? @relation(fields: [userId], references: [id])
+  acceptedToken   String?
+  requestedToken  String?  @default("TUSD")
+  tx_hash         String?
+  createdAt       DateTime  @default(now()) @map(name: "created_at")
+  paidAt          DateTime?  @updatedAt @map(name: "paid_at")
 }
 

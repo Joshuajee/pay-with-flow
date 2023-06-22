@@ -2,7 +2,7 @@ import prisma from "@/libs/prisma"
 import { User } from "@prisma/client";
 import crypto from "crypto";
 
-export const sessionCookie = (cookieName: string = "auth", age: number = 3600 * 24 * 7) => {
+export const sessionCookie = (cookieName: string = "auth", age: number = 3600) => {
 
   const password : string = String(process.env.SESSION_PASSWORD)
 

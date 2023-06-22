@@ -12,7 +12,7 @@ interface IProps {
 
 const AuthCard = ({ children, title } :IProps) => {
 
-    const { isLoggedIn, profileExists } = useContext(AuthContext)
+    const { isLoggedIn, profileExists, loadProfile } = useContext(AuthContext)
 
     const [open, setOpen] = useState(false)
 
@@ -45,7 +45,7 @@ const AuthCard = ({ children, title } :IProps) => {
                 (profileExists && isLoggedIn) && children 
             }
 
-            <CreateProfileForm open={open} handleClose={handleClose} />
+            <CreateProfileForm open={open} handleClose={handleClose} loadProfile={loadProfile} />
 
         </Card>
     )

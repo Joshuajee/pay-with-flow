@@ -12,9 +12,10 @@ import createProfile from "@/flow/transactions/createProfile"
 interface IProps {
     open: boolean
     handleClose: () => void
+    loadProfile: () => void
 }
 
-const CreateProfileForm = ({open, handleClose} : IProps) => {
+const CreateProfileForm = ({open, handleClose, loadProfile} : IProps) => {
 
     const name = useInput("text", 3)
 
@@ -25,7 +26,7 @@ const CreateProfileForm = ({open, handleClose} : IProps) => {
         setLoading(true)
     
         try {
-            await createProfile("John")
+            await createProfile("John", loadProfile)
             toast.success("Profile Created Successfully")
             handleClose()
         } catch (e) {

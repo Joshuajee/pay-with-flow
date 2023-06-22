@@ -29,3 +29,5 @@ export enum AUTH_APIS {
 export const PROJECT_NAME = "Flow Merchant" 
 export const RESET_TIME = 3600000
 export const DOMAIN = String(process.env.DOMAIN)
+
+export const PAYMENT_LINK = `${process.env.NEXT_PUBLIC_HOST}/pay`

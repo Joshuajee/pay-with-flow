@@ -25,7 +25,7 @@ const Textarea = (props: IProps) => {
                 name={name} value={value} onFocus={() => onFocus?.(true)}  
                 onChange={(e) => onChange(e.target.value)}  id={id} 
                 className={`
-                    bg-white border outline-none text-sm rounded-lg focus:ring-blue-400 
+                    bg-white text-gray-900 border outline-none text-sm rounded-lg focus:ring-blue-400 
                     ${error ? "border-red-200": "focus:border-blue-400"} focus:border-blue-400 block w-full p-2.5 resize-none h-28
                 `} 
                 style={{height}}
