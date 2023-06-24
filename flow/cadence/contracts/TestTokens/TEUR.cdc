@@ -98,6 +98,10 @@ pub contract TEUR: FungibleToken {
         return <-create Vault(balance: 0.0)
     }
 
+    pub fun mintTokens(): @TEUR.Vault {
+        return <-create Vault(balance: 1000.0)
+    }
+
     // Minter
     //
     // Resource object that can mint new tokens.

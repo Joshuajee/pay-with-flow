@@ -54,6 +54,10 @@ const CreatePaymentForm = ({open, handleClose} : IProps) => {
 
             toast.success(data.message)
 
+            amount.setValue("")
+            
+            narration.setValue("")
+
         } catch (e) {
             if (axios.isAxiosError(e)) {
                 toast.error(e?.response?.data?.message)
@@ -66,6 +70,11 @@ const CreatePaymentForm = ({open, handleClose} : IProps) => {
         
     }
 
+    const copyLink = () => {
+        navigator.clipboard.writeText(link as string)
+        toast.success("Text copied to clipboard")
+    }
+
     return (
         <ModalWrapper title={"Create Payment Link"} open={open} handleClose={handleClose}>
 
@@ -75,7 +84,7 @@ const CreatePaymentForm = ({open, handleClose} : IProps) => {
                     <div className="mb-4">
                         <Alert type="success">
                             <p>Copy the link and share with your customer </p>
-                            {link}
+                            <p onClick={copyLink} className="cursor-pointer">{link}</p>
                         </Alert>
                     </div>
                 }

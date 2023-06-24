@@ -14,13 +14,13 @@ export const getServerSideProps = withIronSessionSsr(async({req}) => {
 
   const count = await prisma.transaction.count({
     where: {
-      addressTo: user?.address
+      address: user?.address
     }
   })
 
   const transactions = await prisma.transaction.findMany({
     where: {
-      addressTo: user?.address
+      address: user?.address
     },
     orderBy: {
       createdAt: "desc"

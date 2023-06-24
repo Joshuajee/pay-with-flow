@@ -21,11 +21,9 @@ export const getServerSideProps = withIronSessionSsr(async({req, params}) => {
 
   const { address, tx_ref } = params as any
 
-  console.log({ address, tx_ref })
-
   const transactions = await prisma.transaction.findFirst({
     where: {  
-      addressTo: address,
+      address: address,
       tx_ref  
     }
   })
@@ -68,7 +66,7 @@ export default function Home(props: IProps) {
 
 
   return (
-    <Layout nonce={props.nonce}>
+    <Layout hideSidebar={true} nonce={props.nonce}>
 
       <Card>
 
@@ -76,7 +74,7 @@ export default function Home(props: IProps) {
 
           <div className=''>
 
-            <div className='border-[1px] p-4 rounded-md w-full max-w-[400px]'>
+            <div className='border-[1px] p-4 rounded-md w-full max-w-[600px]'>
 
               <div className='grid grid-cols-6'>
 
@@ -88,7 +86,7 @@ export default function Home(props: IProps) {
 
                 {cell("Amount Paid", data.amountPaid)}
 
-                {cell("Receiptient", data.addressTo)}
+                {cell("Receiptient", data.address)}
 
                 {cell("Source", data.source)}
 
@@ -101,7 +99,7 @@ export default function Home(props: IProps) {
             <div className='flex justify-center p-4'>
 
               <button
-                onClick={() => sendFlow(data.addressTo, data.tx_ref as string, Number(data.amount))}
+                onClick={() => sendFlow(data.address, data.tx_ref as string, Number(data.amount))}
                 className='bg-purple-700 rounded-md px-8 py-2'
                 >
                 Send Flow

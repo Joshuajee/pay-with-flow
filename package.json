@@ -9,7 +9,8 @@
     "lint": "next lint",
     "start-emulator": "flow emulator -v",
     "dev-worker": "nodemon worker.js",
-    "start-worker": "node worker.js"
+    "start-worker": "node worker.js",
+    "start-prod": "next start && node worker.js"
   },
   "dependencies": {
     "@onflow/fcl": "^1.4.1",

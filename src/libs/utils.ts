@@ -17,9 +17,10 @@ export const tokenFormat = (amount: number) => {
 
 export const navs = [
     { name : 'Dashboard', link: LINKS.DASHBOARD },
-    { name : 'Profile', link: LINKS.PROFILE },
+    // { name : 'Profile', link: LINKS.PROFILE },
     { name : 'Transactions', link: LINKS.TRANSACTIONS },
     { name : 'Integration', link: LINKS.INTEGRATION },
+    { name : 'Faucets', link: LINKS.FAUCETS },
 ]
 
 

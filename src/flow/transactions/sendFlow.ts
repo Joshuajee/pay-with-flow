@@ -1,5 +1,4 @@
 import { resolveTransaction } from "@/libs/utils";
-import { mutate, tx } from "@onflow/fcl";
 
 const sendFlow = async (recepient: string, tx_ref: string, amount: number, callback?: () => void, errCallback?: () => void) => {
     const cadence = `

@@ -31,38 +31,51 @@ console.log(
   `Listening for event "${eventName}" from "${contractName}" deployed on account 0x${contractAddress}`
 );
 
-fcl.events(event).subscribe(async(eventData) => {
+fcl.events(event).subscribe(async(eventData, ...args) => {
+
+  console.log(args)
+
 
   const { tx_ref, tokenReceived, amount } = eventData
   
   console.log({ tx_ref, tokenReceived, amount });
 
-  const transaction = await prisma.transaction.findUnique({ 
-    where: { tx_ref }, 
-    select: { 
-      amount
-    } 
-  })
+  const date = new Date()
 
-  if (transaction) {
-    await prisma.transaction.update({
-      where: {  tx_ref  },
-      data: {
-        amountPaid: { increment: amount },
-        status: "paid",
-        paidAt: Date.now()
-      }
+  try {
+
+    const transaction = await prisma.transaction.findUnique({ 
+      where: { tx_ref }, 
+      select: { 
+        amount: true
+      } 
     })
-  } else {
-    await prisma.transaction.create({
-      data: {
-        tx_ref,
-        amount,
-        amountPaid: amount,
-        source: "unknown",
-        paidAt: Date.now()
-      }
-    })
+
+    if (transaction) {
+      await prisma.transaction.update({
+        where: {  tx_ref  },
+        data: {
+          amountPaid: { increment: amount },
+          status:  "paid",
+          paidAt: date
+        }
+      })
+    } else {
+      await prisma.transaction.create({
+        data: {
+          tx_ref,
+          amount,
+          amountPaid: amount,
+          source: "unknown",
+          paidAt: date
+        }
+      })
+    }
+
+  } catch (e) {
+    console.error(e)
+  } finally {
+
   }
 
 });

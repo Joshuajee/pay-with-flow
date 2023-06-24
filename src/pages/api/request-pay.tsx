@@ -25,7 +25,7 @@ export default withIronSessionApiRoute(
             const transaction = await prisma.transaction.create({
                 data: {
                     tx_ref:  tx_ref,
-                    addressTo: user.address,
+                    address: user.address,
                     amount: Number(amount),
                     narration,
                     source: "app",

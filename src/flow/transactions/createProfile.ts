@@ -1,34 +1,41 @@
-import { resolveTransaction } from "@/libs/utils";
-import { mutate, tx } from "@onflow/fcl";
+import { contract } from "@/libs/utils";
+import * as fcl from "@onflow/fcl";
 
+const createProfile = async (name: string, callBack?: () => void) => {
 
-const createProfile = async (name: string, callback?: () => void, errCallback?: () => void) => {
+  const transactionId = await fcl.mutate({
+    cadence: `
+      import FlowMerchant from 0xFlowMerchant
 
-  const cadence = `
-    import FlowMerchant from 0xFlowMerchant
+        transaction () {
 
-    transaction {
-      prepare(acct: AuthAccount, name: String) {
-
-        // Create a new empty Games
-        let profile <- FlowMerchant.createProfile(merchantName: "John", merchantAddress: acct.address )
-
-        // store the empty Account in account storage
-        acct.save<@FlowMerchant.Profile>(<-profile, to: FlowMerchant.MerchantStoragePath)
-
-        let capability = acct.link<&{FlowMerchant.PublicProfileInterface}>(FlowMerchant.MerchantPublicPath, target: FlowMerchant.MerchantStoragePath)
-
-      }
-      execute {
-        log("Profile Created")
-      }
+          prepare(acct: AuthAccount) {
     
+            // Create a new empty Games
+            let profile <- FlowMerchant.createProfile(merchantName: "John", merchantAddress: acct.address )
+    
+            // store the empty Account in account storage
+            acct.save<@FlowMerchant.Profile>(<-profile, to: FlowMerchant.MerchantStoragePath)
+    
+            let capability = acct.link<&{FlowMerchant.PublicProfileInterface}>(FlowMerchant.MerchantPublicPath, target: FlowMerchant.MerchantStoragePath)
+    
+          }
+          execute {
+            log("Profile Created")
+          }
+        
+        }
+    `,
+    limit: 500,
+  });
+
+  fcl.tx(transactionId).subscribe((res: any) => {
+    if (res.status === 4) {
+      callBack?.()
+    } else {
+      
     }
-  `
-
-  const args = (arg: any, t: any) => [arg(name, t.String), t.UFix64];
-
-  await resolveTransaction(cadence, args, callback, errCallback)
+  });
 
 };
 

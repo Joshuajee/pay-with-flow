@@ -41,18 +41,27 @@ model User {
 model Transaction {
   id              Int       @id @default(autoincrement())
   tx_ref          String    @unique
-  addressTo       String    
+  address         String    
   amount          Decimal   @default(0)
-  amountPaid      Decimal  @default(0) @map(name: "amount_paid")
+  amountPaid      Decimal   @default(0) @map(name: "amount_paid")
   narration       String?
   source          TransactionSource @default(unknown)
   status          TransactionStatus @default(pending)
   userId          Int?
   user            User? @relation(fields: [userId], references: [id])
-  acceptedToken   String?
-  requestedToken  String?  @default("TUSD")
-  tx_hash         String?
+  metadata        Json?
+  requestedToken  Int?  @default(0)
   createdAt       DateTime  @default(now()) @map(name: "created_at")
   paidAt          DateTime?  @updatedAt @map(name: "paid_at")
 }
 
+
+model Payment {
+  id              Int       @id @default(autoincrement())
+  tx_ref          String    
+  address         String    
+  amount          Decimal   @default(0)
+  requestedToken  Int?  @default(0)
+  tx_hash         String?
+  createdAt       DateTime  @default(now()) @map(name: "created_at")
+}

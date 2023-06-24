@@ -5,7 +5,6 @@ import '@/flow/config'
 import { sessionCookie, validateUser } from '@/services/session'
 import prisma from '@/libs/prisma'
 import { Transaction } from '@prisma/client'
-import { Decimal } from '@prisma/client/runtime'
 import { toast } from 'react-toastify'
 import { PAYMENT_LINK } from '@/libs/constants'
 
@@ -49,7 +48,7 @@ export default function Transaction(props: IProps) {
   }
 
   const copyLink = () => {
-    navigator.clipboard.writeText(`${PAYMENT_LINK}/${data.addressTo}/${data.tx_ref}`)
+    navigator.clipboard.writeText(`${PAYMENT_LINK}/${data.address}/${data.tx_ref}`)
     toast.success("Text copied to clipboard")
   }
 
@@ -60,9 +59,9 @@ export default function Transaction(props: IProps) {
 
         <div className='flex mt-4 h-[80%] justify-center items-center'>
 
-          <div className=''>
+          <div>
 
-            <div className='border-[1px] p-4 rounded-md w-full max-w-[400px]'>
+            <div className='border-[1px] p-4 rounded-md w-full max-w-[600px]'>
 
               <div className='grid grid-cols-6'>
 
@@ -74,11 +73,9 @@ export default function Transaction(props: IProps) {
 
                 {cell("Amount Paid", data.amountPaid)}
 
-                {cell("Receiptient", data.addressTo)}
+                {cell("Receiptient", data.address)}
 
                 {cell("Source", data.source)}
-
-                {cell("Tx Hash", data.tx_hash)}
 
                 {cell("Narration", data.narration)}
 

@@ -21,17 +21,26 @@ const CreateProfileForm = ({open, handleClose, loadProfile} : IProps) => {
 
     const [loading, setLoading] = useState(false)
 
+    const success = async() => {
+        toast.success("Profile created successfully")
+        loadProfile()
+        handleClose()
+        name.setValue("")
+    }
+
+    const error = () => {
+        toast.error("Error creating profile")
+    }
+
     const create = async() => {
 
         setLoading(true)
     
         try {
-            await createProfile("John", loadProfile)
-            toast.success("Profile Created Successfully")
-            handleClose()
+            await createProfile(name.value as string, success)
         } catch (e) {
             console.error(e)
-            toast.error("Error creating profile")
+            error()
         }
 
         setLoading(false)

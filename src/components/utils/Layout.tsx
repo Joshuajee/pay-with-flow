@@ -38,7 +38,7 @@ const Layout = ({children, nonce, hideSidebar} : IProps) => {
                                 </div>
                         }
 
-                        {   hideSidebar && <div>{children}</div>    }
+                        {   hideSidebar && <div className='w-full'>{children}</div>    }
       
                     </Container>
                 </div>
