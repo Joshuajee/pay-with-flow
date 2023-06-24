@@ -24,10 +24,14 @@ const ConnectionBtn = () => {
 
     const authenticated = (
         <div className='flex justify-center items-center'>
-            <div onClick={() => setShow(!show)} className='px-6 p-2 hover:cursor-pointer cursor-pointer rounded-3xl border-white border-[1px]'>
+            <div onClick={() => setShow(!show)} className='text-sm sm:text-base sm:px-6 p-2 hover:cursor-pointer cursor-pointer rounded-3xl border-white border-[1px]'>
                 <span> {currentUser.addr} </span>
             </div>
-            { !router?.asPath?.includes("play") && <button className='ml-2 p-2 hover:cursor-pointer cursor-pointer rounded-3xl border-white border-[1px]' onClick={logOut}> <RiLogoutBoxRLine /> </button> }
+            <button 
+                className='ml-2 p-2 hover:cursor-pointer cursor-pointer rounded-3xl border-white border-[1px]' 
+                onClick={logOut}> 
+                <RiLogoutBoxRLine /> 
+            </button> 
         </div>
     )
 

@@ -20,6 +20,7 @@ enum TransactionSource {
 enum TransactionStatus {
   pending
   partial_payment
+  paid
   success
   error
   failed
@@ -39,11 +40,10 @@ model User {
 
 model Transaction {
   id              Int       @id @default(autoincrement())
-  tx_ref          String?
+  tx_ref          String    @unique
   addressTo       String    
-  addressFrom     String?
-  amount          Decimal?
-  amountPaid      Decimal? @map(name: "amount_paid")
+  amount          Decimal   @default(0)
+  amountPaid      Decimal  @default(0) @map(name: "amount_paid")
   narration       String?
   source          TransactionSource @default(unknown)
   status          TransactionStatus @default(pending)

@@ -1,7 +1,6 @@
 import { withIronSessionSsr } from 'iron-session/next'
 import Layout from '@/components/utils/Layout'
 import AuthCard from '@/components/utils/AuthCard'
-import '@/flow/config'
 import { sessionCookie, validateUser } from '@/services/session'
 
 

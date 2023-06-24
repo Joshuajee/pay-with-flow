@@ -23,7 +23,7 @@ export const getServerSideProps = withIronSessionSsr(async({req}) => {
       addressTo: user?.address
     },
     orderBy: {
-        createdAt: "desc"
+      createdAt: "desc"
     },
   })
 

@@ -7,7 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "start-emulator": "flow emulator -v"
+    "start-emulator": "flow emulator -v",
+    "dev-worker": "nodemon worker.js",
+    "start-worker": "node worker.js"
   },
   "dependencies": {
     "@onflow/fcl": "^1.4.1",
@@ -20,6 +22,7 @@
     "autoprefixer": "10.4.14",
     "bcryptjs": "^2.4.3",
     "dateformat": "^5.0.3",
+    "dotenv": "^16.3.1",
     "eslint": "8.42.0",
     "eslint-config-next": "13.4.6",
     "generate-unique-id": "^2.0.1",

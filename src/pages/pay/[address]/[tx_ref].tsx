@@ -8,16 +8,33 @@ import LoadingButton from '@/components/utils/LoadingButton'
 import LoadingButtonSM from '@/components/utils/LoadingButtonSM'
 import { useState } from 'react'
 import CreatePaymentForm from '@/components/modals/CreatePaymentForm'
+import prisma from '@/libs/prisma'
+import { NextPageContext } from 'next'
+import Card from '@/components/utils/Card'
+import { Transaction } from '@prisma/client'
+import sendFlow from '@/flow/transactions/sendFlow'
 
 
-export const getServerSideProps = withIronSessionSsr(async({req}) => {
+export const getServerSideProps = withIronSessionSsr(async({req, params}) => {
 
-  const  { user, nonce }  = await validateUser(req)
+  const { user, nonce } = await validateUser(req)
+
+  const { address, tx_ref } = params as any
+
+  console.log({ address, tx_ref })
+
+  const transactions = await prisma.transaction.findFirst({
+    where: {  
+      addressTo: address,
+      tx_ref  
+    }
+  })
 
   return { 
     props: {
       user: JSON.stringify(user),
-      nonce: JSON.stringify(nonce)
+      nonce: JSON.stringify(nonce),
+      data: JSON.stringify(transactions)
     }, 
   }
   
@@ -26,10 +43,13 @@ export const getServerSideProps = withIronSessionSsr(async({req}) => {
 interface IProps {
   user: string;
   nonce: string;
+  data: string;
 }
 
 
 export default function Home(props: IProps) {
+
+  const data: Transaction = JSON.parse(props.data)
 
   const [open, setOpen] = useState(false)
 
@@ -37,28 +57,63 @@ export default function Home(props: IProps) {
     setOpen(false)
   }
 
+  const cell = (cell: string, content: any) => {
+    return (
+      <>
+        <div className='col-span-2'>{cell}</div>
+        <div className='col-span-4'>{content ? content : "N/A"}</div>
+      </>
+    )
+  }
+
+
   return (
     <Layout nonce={props.nonce}>
-      <AuthCard title='Dashboard'>
 
-        <>
+      <Card>
 
-          <div className='flex justify-end mb-5'>
-            <div> 
-              <LoadingButtonSM onClick={() => setOpen(true)}>Create Transaction</LoadingButtonSM>
+        <div className='flex mt-4 h-[80%] justify-center items-center'>
+
+          <div className=''>
+
+            <div className='border-[1px] p-4 rounded-md w-full max-w-[400px]'>
+
+              <div className='grid grid-cols-6'>
+
+                {cell("Tx Ref", data.tx_ref)}
+
+                {cell("Status", data.status)}
+
+                {cell("Amount", data.amount)}
+
+                {cell("Amount Paid", data.amountPaid)}
+
+                {cell("Receiptient", data.addressTo)}
+
+                {cell("Source", data.source)}
+
+                {cell("Narration", data.narration)}
+
+              </div>
+
             </div>
+
+            <div className='flex justify-center p-4'>
+
+              <button
+                onClick={() => sendFlow(data.addressTo, data.tx_ref as string, Number(data.amount))}
+                className='bg-purple-700 rounded-md px-8 py-2'
+                >
+                Send Flow
+              </button>
+
+            </div>
+
           </div>
 
-          <h3 className='text-xl mb-4'>Supported Tokens</h3>
+        </div>
 
-          <div className='grid grid-cols-1 md:grid-cols-2 w-full gap-2 '>
-            <TokenControl />
-            <TokenControl />
-          </div>
-
-        </>
-
-      </AuthCard>
+      </Card>
 
       <CreatePaymentForm open={open} handleClose={handleClose} />
 

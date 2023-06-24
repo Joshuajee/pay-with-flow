@@ -21,3 +21,10 @@ export enum API_ROUTES {
 export enum LOCAL_STORAGE {
     NONCE = "nonce"
 }
+
+export enum SUPPORTED_TOKENS {
+    FLOW = "Flow Token",
+    TEUR = "Test EUR",
+    TUSD = "Test USD",
+    TGBP = "Test GBP",
+}

@@ -7,10 +7,10 @@ import { LOCAL_STORAGE } from '@/libs/enums';
 interface IProps {
     children: ReactNode;
     nonce: string;
-    
+    hideSidebar?: boolean;
 }
 
-const Layout = ({children, nonce} : IProps) => {
+const Layout = ({children, nonce, hideSidebar} : IProps) => {
 
     useEffect(() => {
         localStorage.setItem(LOCAL_STORAGE.NONCE, JSON.parse(nonce))
@@ -22,17 +22,23 @@ const Layout = ({children, nonce} : IProps) => {
                 <Navbar />
                 <div className='relative top-16 flex-grow'>
                     <Container>
-                        <div className='grid grid-cols-12 w-full gap-10'>
 
-                            <div className='col-span-3'>
-                                <SideNav />
-                            </div>
+                        {   
+                            !hideSidebar &&                           
+                                <div className='grid grid-cols-12 w-full md:gap-10'>
 
-                            <div className='col-span-9 overflow-auto'>
-                                {children}
-                            </div>
-                       
-                        </div>
+                                    <div className='hidden md:block md:col-span-3'>
+                                        <SideNav />
+                                    </div>
+
+                                    <div className='col-span-12 md:col-span-9 overflow-auto'>
+                                        {children}
+                                    </div>
+                            
+                                </div>
+                        }
+
+                        {   hideSidebar && <div>{children}</div>    }
       
                     </Container>
                 </div>

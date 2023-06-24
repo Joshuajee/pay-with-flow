@@ -19,7 +19,6 @@ export const sessionCookie = (cookieName: string = "auth", age: number = 3600) =
 
 
 export const createUserSession = async (user: User, req: any) => {
-  await req.session.destroy();
   req.session.user = user
   await req.session.save();
 }
