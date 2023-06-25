@@ -1,11 +1,9 @@
 import { withIronSessionSsr } from 'iron-session/next'
-import { useState } from 'react'
 import Layout from '@/components/utils/Layout'
 import AuthCard from '@/components/utils/AuthCard'
 import { sessionCookie, validateUser } from '@/services/session'
-import TokenControl from '@/components/utils/TokenControl'
-import LoadingButtonSM from '@/components/utils/LoadingButtonSM'
 import { SUPPORTED_TOKENS } from '@/libs/enums'
+import TokenFaucet from '@/components/utils/TokenFaucet'
 
 
 export const getServerSideProps = withIronSessionSsr(async({req}) => {
@@ -41,13 +39,13 @@ export default function Faucets(props: IProps) {
 
           <div className='grid grid-cols-1 md:grid-cols-2 w-full gap-2 '>
 
-            <TokenControl token={SUPPORTED_TOKENS.FLOW}  />
+            <TokenFaucet token={SUPPORTED_TOKENS.FLOW}  />
 
-            <TokenControl token={SUPPORTED_TOKENS.TUSD} />
+            <TokenFaucet token={SUPPORTED_TOKENS.TUSD} />
 
-            <TokenControl token={SUPPORTED_TOKENS.TEUR} />
+            <TokenFaucet token={SUPPORTED_TOKENS.TEUR} />
 
-            <TokenControl token={SUPPORTED_TOKENS.TGBP} />
+            <TokenFaucet token={SUPPORTED_TOKENS.TGBP} />
 
           </div>
 

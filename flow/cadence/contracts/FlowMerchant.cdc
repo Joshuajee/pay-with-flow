@@ -13,20 +13,21 @@ pub contract FlowMerchant {
         pub case TGBP
     }
 
-    pub event Deposit(tx_ref: String, tokenReceived: UInt8, amount: UFix64)
+    pub event Deposit(paymentId: UInt256, tx_ref: String, tokenReceived: UInt8, amount: UFix64)
     pub event Withdrawal(tokenWithdrawn: UInt8, amount: UFix64)
 
     pub let MerchantStoragePath: StoragePath
     pub let MerchantPublicPath: PublicPath
 
-    pub var merchantCount: UInt64
+    pub var merchantCount: UInt256
+    pub var paymentId: UInt256
 
     pub resource interface PublicProfileInterface {
         pub var merchantName: String
         pub fun depositFlowToken (from: @FungibleToken.Vault, tx_ref: String)
-        pub fun depositTUSD (from: @TUSD.Vault, tx_ref: String) 
-        pub fun depositTGBP (from: @TGBP.Vault, tx_ref: String)
-        pub fun depositTEUR (from: @TEUR.Vault, tx_ref: String)
+        pub fun depositTUSD (from: @FungibleToken.Vault, tx_ref: String) 
+        pub fun depositTGBP (from: @FungibleToken.Vault, tx_ref: String)
+        pub fun depositTEUR (from: @FungibleToken.Vault, tx_ref: String)
     }
 
     pub resource interface PrivateProfileInterface {
@@ -74,33 +75,46 @@ pub contract FlowMerchant {
         pub fun depositFlowToken (from: @FungibleToken.Vault, tx_ref: String) {
             let balance: UFix64 = from.balance
             self.FlowTokenVault.deposit(from: <- from)
-            emit Deposit(tx_ref: tx_ref, tokenReceived: SupportedToken.FlowToken.rawValue, amount: balance)
+            let paymentId = FlowMerchant.paymentId 
+            emit Deposit(paymentId: paymentId, tx_ref: tx_ref, tokenReceived: SupportedToken.FlowToken.rawValue, amount: balance)
         }
 
-        pub fun depositTUSD (from: @TUSD.Vault, tx_ref: String) {
+        pub fun depositTUSD (from: @FungibleToken.Vault, tx_ref: String) {
             let balance: UFix64 = from.balance
             self.TUSDVault.deposit(from: <- from)
-            emit Deposit(tx_ref: tx_ref, tokenReceived: SupportedToken.TUSD.rawValue, amount: balance)
+            let paymentId = FlowMerchant.paymentId 
+            emit Deposit(paymentId: paymentId, tx_ref: tx_ref, tokenReceived: SupportedToken.TUSD.rawValue, amount: balance)
         }
 
-        pub fun depositTGBP (from: @TGBP.Vault, tx_ref: String) {
+        pub fun depositTGBP (from: @FungibleToken.Vault, tx_ref: String) {
             let balance: UFix64 = from.balance
             self.TGBPVault.deposit(from: <- from)
-            emit Deposit(tx_ref: tx_ref, tokenReceived: SupportedToken.TGBP.rawValue, amount: balance)
+            let paymentId = FlowMerchant.paymentId 
+            emit Deposit(paymentId: paymentId, tx_ref: tx_ref, tokenReceived: SupportedToken.TGBP.rawValue, amount: balance)
         }
 
-        pub fun depositTEUR (from: @TEUR.Vault, tx_ref: String) {
+        pub fun depositTEUR (from: @FungibleToken.Vault, tx_ref: String) {
             let balance: UFix64 = from.balance
             self.TEURVault.deposit(from: <- from)
-            emit Deposit(tx_ref: tx_ref, tokenReceived: SupportedToken.TUSD.rawValue, amount: balance)
+            let paymentId = FlowMerchant.paymentId 
+            emit Deposit(paymentId: paymentId, tx_ref: tx_ref, tokenReceived: SupportedToken.TUSD.rawValue, amount: balance)
+        }
+
+        pub fun generatePaymentId (): UInt256 {
+            FlowMerchant.paymentId = FlowMerchant.paymentId + 1
+            return  FlowMerchant.paymentId
         }
 
         init(merchantName: String) {
             self.merchantName = merchantName
+
             self.FlowTokenVault <- FlowToken.createEmptyVault()
             self.TUSDVault <- TUSD.createEmptyVault()
             self.TGBPVault <- TGBP.createEmptyVault()
             self.TEURVault <- TEUR.createEmptyVault()
+
+            FlowMerchant.merchantCount = FlowMerchant.merchantCount + 1
+            FlowMerchant.paymentId = FlowMerchant.paymentId + 1
         }
 
         destroy() {
@@ -113,7 +127,6 @@ pub contract FlowMerchant {
     }
 
     pub fun createProfile(merchantName: String, merchantAddress: Address): @Profile {
-        self.merchantCount = self.merchantCount + 1
         return <- create Profile(merchantName: merchantName)
     }
 
@@ -121,6 +134,7 @@ pub contract FlowMerchant {
         self.MerchantStoragePath = /storage/MerchantStoragePath
         self.MerchantPublicPath = /public/MerchantPublicPath
         self.merchantCount = 0
+        self.paymentId = 0
     }
 
 }

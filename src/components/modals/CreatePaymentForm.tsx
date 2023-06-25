@@ -11,6 +11,7 @@ import { tokenFormat, tokenLists } from "@/libs/utils";
 import axios, { AxiosResponse } from "axios";
 import Alert from "../utils/Alert";
 import { PAYMENT_LINK } from "@/libs/constants";
+import { Transaction } from "@prisma/client";
 
 
 interface IProps {
@@ -46,16 +47,16 @@ const CreatePaymentForm = ({open, handleClose} : IProps) => {
             
             const res : AxiosResponse = await axios.post("/api/request-pay", body)
             
-            const data  = res?.data
+            const data = res?.data
 
-            const { addressTo, tx_ref } = data?.data
+            const { address, tx_ref } = data?.data as Transaction
 
-            setLink(`${PAYMENT_LINK}/${addressTo}/${tx_ref}`)
+            setLink(`${PAYMENT_LINK}/${address}/${tx_ref}`)
 
             toast.success(data.message)
 
             amount.setValue("")
-            
+
             narration.setValue("")
 
         } catch (e) {

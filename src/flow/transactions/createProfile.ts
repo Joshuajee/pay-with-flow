@@ -11,7 +11,7 @@ const createProfile = async (name: string, callBack?: () => void) => {
 
           prepare(acct: AuthAccount) {
     
-            // Create a new empty Games
+            // Create a new profile
             let profile <- FlowMerchant.createProfile(merchantName: "John", merchantAddress: acct.address )
     
             // store the empty Account in account storage

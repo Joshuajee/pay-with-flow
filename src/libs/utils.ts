@@ -54,3 +54,34 @@ export const resolveTransaction = async (cadence: string, args: any, callback?: 
     }
 
 }
+
+
+export const toTokenId = (token: SUPPORTED_TOKENS): number => {
+    switch (token) {
+        case SUPPORTED_TOKENS.FLOW:
+            return 0
+        case SUPPORTED_TOKENS.TUSD:
+            return 1
+        case SUPPORTED_TOKENS.TEUR:
+            return 2
+        case SUPPORTED_TOKENS.TGBP:
+            return 3
+        default:
+            return -1
+    }
+}
+
+export const fromTokenId = (id: number): SUPPORTED_TOKENS => {
+    switch (id) {
+        case 0:
+            return SUPPORTED_TOKENS.FLOW
+        case 1:
+            return SUPPORTED_TOKENS.TUSD
+        case 2:
+            return SUPPORTED_TOKENS.TEUR
+        case 3:
+            return SUPPORTED_TOKENS.TGBP
+        default:
+            return SUPPORTED_TOKENS.FLOW
+    }
+}

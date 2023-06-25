@@ -99,7 +99,7 @@ pub contract TGBP: FungibleToken {
     }
 
     pub fun mintTokens(): @TGBP.Vault {
-        return <-create Vault(balance: 1000.0)
+        return <-create Vault(balance: 10000.0)
     }
 
 

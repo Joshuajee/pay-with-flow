@@ -99,7 +99,7 @@ pub contract TUSD: FungibleToken {
     }
 
     pub fun mintTokens(): @TUSD.Vault {
-        return <-create Vault(balance: 1000.0)
+        return <-create Vault(balance: 10000.0)
     }
 
 

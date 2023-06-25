@@ -13,6 +13,10 @@ import { NextPageContext } from 'next'
 import Card from '@/components/utils/Card'
 import { Transaction } from '@prisma/client'
 import sendFlow from '@/flow/transactions/sendFlow'
+import sendTEUR from '@/flow/transactions/sendTEUR'
+import sendTUSD from '@/flow/transactions/sendTUSD'
+import sendTGBP from '@/flow/transactions/sendTGBP'
+import { fromTokenId, toTokenId } from '@/libs/utils'
 
 
 export const getServerSideProps = withIronSessionSsr(async({req, params}) => {
@@ -76,15 +80,15 @@ export default function Home(props: IProps) {
 
             <div className='border-[1px] p-4 rounded-md w-full max-w-[600px]'>
 
-              <div className='grid grid-cols-6'>
+              <div className='grid grid-cols-6 gap-4'>
 
                 {cell("Tx Ref", data.tx_ref)}
 
                 {cell("Status", data.status)}
 
-                {cell("Amount", data.amount)}
+                {cell("Amount",  `${data.amount} ${fromTokenId(Number(data.requestedToken))}`)}
 
-                {cell("Amount Paid", data.amountPaid)}
+                {cell("Amount Paid", `${data.amountPaid} ${fromTokenId(Number(data.requestedToken))}`)}
 
                 {cell("Receiptient", data.address)}
 
@@ -100,9 +104,27 @@ export default function Home(props: IProps) {
 
               <button
                 onClick={() => sendFlow(data.address, data.tx_ref as string, Number(data.amount))}
-                className='bg-purple-700 rounded-md px-8 py-2'
-                >
+                className='bg-purple-700 rounded-md px-8 py-2'>
                 Send Flow
+              </button>
+
+
+              <button
+                onClick={() => sendTUSD(data.address, data.tx_ref as string, Number(data.amount))}
+                className='bg-purple-700 rounded-md px-8 py-2'>
+                Send TUSD
+              </button>
+
+              <button
+                onClick={() => sendTEUR(data.address, data.tx_ref as string, Number(data.amount))}
+                className='bg-purple-700 rounded-md px-8 py-2'>
+                Send TEUR
+              </button>
+
+              <button
+                onClick={() => sendTGBP(data.address, data.tx_ref as string, Number(data.amount))}
+                className='bg-purple-700 rounded-md px-8 py-2'>
+                Send TGBP
               </button>
 
             </div>

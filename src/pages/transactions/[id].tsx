@@ -7,6 +7,7 @@ import prisma from '@/libs/prisma'
 import { Transaction } from '@prisma/client'
 import { toast } from 'react-toastify'
 import { PAYMENT_LINK } from '@/libs/constants'
+import { fromTokenId } from '@/libs/utils'
 
 
 
@@ -63,15 +64,16 @@ export default function Transaction(props: IProps) {
 
             <div className='border-[1px] p-4 rounded-md w-full max-w-[600px]'>
 
-              <div className='grid grid-cols-6'>
+              <div className='grid grid-cols-6 gap-4'>
 
                 {cell("Tx Ref", data.tx_ref)}
 
                 {cell("Status", data.status)}
 
-                {cell("Amount", data.amount)}
+                {cell("Amount",  `${data.amount} ${fromTokenId(Number(data.requestedToken))}`)}
 
-                {cell("Amount Paid", data.amountPaid)}
+                {cell("Amount Paid", `${data.amountPaid} ${fromTokenId(Number(data.requestedToken))}`)}
+
 
                 {cell("Receiptient", data.address)}
 
