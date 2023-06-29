@@ -29,6 +29,7 @@ export default withIronSessionApiRoute(
                     amount: Number(amount),
                     narration,
                     source: "app",
+                    requestedToken: Number(token)
                 }
             })
 

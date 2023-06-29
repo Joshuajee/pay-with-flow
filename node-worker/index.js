@@ -1,7 +1,6 @@
-const next = require('next')
 const { PrismaClient } = require('@prisma/client')
-const fcl = require("@onflow/fcl");
-//require("dotenv").config({ path: "./.env.development" })
+const fcl = require("@onflow/fcl")
+require("dotenv").config({ path: "./.env" })
 
 
 const prisma = new PrismaClient();
@@ -31,35 +30,46 @@ console.log(
   `Listening for event "${eventName}" from "${contractName}" deployed on account 0x${contractAddress}`
 );
 
-fcl.events(event).subscribe(async(eventData, ...args) => {
+fcl.events(event).subscribe(async(eventData) => {
 
-  console.log(args)
-
-
-  const { tx_ref, tokenReceived, amount } = eventData
+  const { paymentId, tx_ref, tokenReceived, amount } = eventData
   
-  console.log({ tx_ref, tokenReceived, amount });
+  console.log({ paymentId, tx_ref, tokenReceived, amount });
 
   const date = new Date()
 
   try {
 
+    await prisma.payment.create({
+      data: {
+        paymentId: Number(paymentId),
+        amount: Number(amount),
+        tx_ref,
+        requestedToken: Number(tokenReceived)
+      }
+    })
+
     const transaction = await prisma.transaction.findUnique({ 
       where: { tx_ref }, 
       select: { 
-        amount: true
+        amount: true,
+        requestedToken: true,
+        amountPaid: true
       } 
     })
 
     if (transaction) {
-      await prisma.transaction.update({
-        where: {  tx_ref  },
-        data: {
-          amountPaid: { increment: amount },
-          status:  "paid",
-          paidAt: date
-        }
-      })
+      if (transaction.requestedToken === Number(tokenReceived)) {
+        await prisma.transaction.update({
+          where: {  tx_ref  },
+          data: {
+            amountPaid: { increment: amount },
+            status: Number(Number(amount) + Number(transaction.amountPaid)) >= Number(transaction.amount) ? "paid" : "partial_payment",
+            paidAt: date
+          }
+        })
+      }
+
     } else {
       await prisma.transaction.create({
         data: {
@@ -67,7 +77,8 @@ fcl.events(event).subscribe(async(eventData, ...args) => {
           amount,
           amountPaid: amount,
           source: "unknown",
-          paidAt: date
+          paidAt: date,
+          requestedToken: Number(tokenReceived)
         }
       })
     }

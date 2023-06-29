@@ -1,4 +1,3 @@
-import { useAuth } from "@/contexts/AuthContext"
 import { useState } from "react"
 import { toast } from "react-toastify"
 import ModalWrapper from "./ModalWrapper"
@@ -7,7 +6,7 @@ import useInput from "@/hooks/useInput";
 import LoadingButton from "../utils/LoadingButton";
 import Textarea from "../utils/Textarea";
 import Select from "../utils/Select";
-import { tokenFormat, tokenLists } from "@/libs/utils";
+import { tokenLists } from "@/libs/utils";
 import axios, { AxiosResponse } from "axios";
 import Alert from "../utils/Alert";
 import { PAYMENT_LINK } from "@/libs/constants";
@@ -39,11 +38,7 @@ const CreatePaymentForm = ({open, handleClose} : IProps) => {
 
         try {
             
-            const body = { 
-                token: selectedToken, 
-                amount: amount.value, 
-                narration: narration.value 
-            }
+            const body = { token: selectedToken, amount: amount.value, narration: narration.value }
             
             const res : AxiosResponse = await axios.post("/api/request-pay", body)
             

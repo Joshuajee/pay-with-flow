@@ -17,7 +17,7 @@ export const getServerSideProps = withIronSessionSsr(async({req, params}) => {
 
   const id = Number(params?.id)
 
-  const transactions = await prisma.transaction.findUnique({where: {  id  }})
+  const transactions = await prisma.transaction.findUnique({  where: {  id  } } )
 
   return { 
     props: {
@@ -73,7 +73,6 @@ export default function Transaction(props: IProps) {
                 {cell("Amount",  `${data.amount} ${fromTokenId(Number(data.requestedToken))}`)}
 
                 {cell("Amount Paid", `${data.amountPaid} ${fromTokenId(Number(data.requestedToken))}`)}
-
 
                 {cell("Receiptient", data.address)}
 

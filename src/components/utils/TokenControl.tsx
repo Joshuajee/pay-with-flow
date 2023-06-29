@@ -1,6 +1,5 @@
-import { ReactNode, useContext, useState } from "react"
+import { useContext, useState } from "react"
 import { RiCopperCoinLine } from 'react-icons/ri'
-import { dollarFormat } from "@/libs/utils";
 import { SUPPORTED_TOKENS } from "@/libs/enums";
 import { AuthContext } from "@/contexts/AuthContext";
 import LoadingButton from "./LoadingButton";
@@ -60,7 +59,6 @@ const TokenControl = ({token}: IProps) => {
         }
 
         const error = () => {
-            
             toast.error("Withdrawal not successful")
         }
 

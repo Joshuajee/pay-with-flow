@@ -17,12 +17,12 @@ const withdrawTGBP = async ( amount: number, callback?: () => void, errCallback?
 
                 log(profile)
 
-                let receiver = receiverAccount.getCapability(/public/flowTokenReceiver)
-                    .borrow<&FlowToken.Vault{FungibleToken.Receiver}>()
+                let receiver = receiverAccount.getCapability(/public/tgbpReceiver)
+                    .borrow<&TGBP.Vault{FungibleToken.Receiver}>()
                     ?? panic("Could not borrow Receiver reference to the Vault")
           
         
-                let tempVault <- profile.withdrawFlowToken(amount: amount)
+                let tempVault <- profile.withdrawTGBP(amount: amount)
 
                 receiver.deposit(from: <- tempVault)
 

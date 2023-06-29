@@ -59,7 +59,7 @@ model Transaction {
 model Payment {
   id              Int       @id @default(autoincrement())
   paymentId       Int
-  tx_ref          String     
+  tx_ref          String    
   amount          Decimal   @default(0)
   requestedToken  Int  @default(0)
   createdAt       DateTime  @default(now()) @map(name: "created_at")

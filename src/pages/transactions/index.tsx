@@ -8,9 +8,13 @@ import prisma from '@/libs/prisma'
 
 
 
-export const getServerSideProps = withIronSessionSsr(async({req}) => {
+export const getServerSideProps = withIronSessionSsr(async({req, query}) => {
 
   const { user, nonce } = await validateUser(req)
+
+  const { page } = query
+
+  console.log(page)
 
   const count = await prisma.transaction.count({
     where: {
@@ -22,6 +26,8 @@ export const getServerSideProps = withIronSessionSsr(async({req}) => {
     where: {
       address: user?.address
     },
+    // skip: 
+    // limit: 10,
     orderBy: {
       createdAt: "desc"
     },
@@ -49,14 +55,12 @@ export default function Transactions(props: IProps) {
 
   return (
     <Layout nonce={props.nonce}>
-      <AuthCard title='Transactions'>
-        <div className='mt-4 h-[400px]'>
-          <TransactionTable 
-            columns={["Transaction Reference", "Amount", "Accepted Tokens", "Source", "Status", "Date Initialized"]}
-            data={[...data.transactions]}
-            />
-        </div>
-      </AuthCard>
+      <div className='h-screen'>
+        <TransactionTable 
+          columns={["Transaction Reference", "Amount", "Accepted Tokens", "Source", "Status", "Date Initialized"]}
+          data={[...data.transactions]}
+          />
+      </div>
     </Layout>
   )
 }

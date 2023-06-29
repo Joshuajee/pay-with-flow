@@ -15,7 +15,7 @@ const withdrawTEUR = async ( amount: number, callback?: () => void, errCallback?
         
                 let receiverAccount = getAccount(signer.address)
 
-                let receiver = receiverAccount.getCapability(/public/tusdReceiver)
+                let receiver = receiverAccount.getCapability(/public/teurReceiver)
                     .borrow<&TEUR.Vault{FungibleToken.Receiver}>()
                     ?? panic("Could not borrow Receiver reference to the Vault")
         

@@ -1,23 +1,17 @@
-import { ReactNode, useCallback, useContext, useEffect, useState } from "react"
+import { useCallback, useContext, useEffect, useState } from "react"
 import { RiCopperCoinLine } from 'react-icons/ri'
-import { dollarFormat } from "@/libs/utils";
 import { SUPPORTED_TOKENS } from "@/libs/enums";
 import { AuthContext } from "@/contexts/AuthContext";
-import LoadingButton from "./LoadingButton";
 import LoadingButtonSM from "./LoadingButtonSM";
-import ModalWrapper from "./ModalWrapper";
-import Input from "./Input";
 import useInput from "@/hooks/useInput";
-import withdrawFlow from "@/flow/transactions/withdrawFlow";
 import { toast } from "react-toastify";
-import mintUSD from "@/flow/transactions/mintTUSD";
 import mintTEUR from "@/flow/transactions/mintTEUR";
 import getTEURBalance from "@/flow/scripts/getTEURBalance";
 import getFlowBalance from "@/flow/scripts/getFlowBalance";
 import getTUSDBalance from "@/flow/scripts/getTUSDBalance";
 import getTGBPBalance from "@/flow/scripts/getTGBPBalance ";
 import mintTUSD from "@/flow/transactions/mintTUSD";
-import mintTGBP from "@/flow/transactions/mintTEUR";
+import mintTGBP from "@/flow/transactions/mintTGBP";
 
 
 
@@ -27,11 +21,9 @@ interface IProps {
 
 const TokenFaucet = ({token}: IProps) => {
 
-    const amount = useInput("number")
-
     const [balance, setBalance] = useState(null)
         
-    const { userProfile, loadProfile, currentUser } = useContext(AuthContext)
+    const { currentUser } = useContext(AuthContext)
 
     const address = currentUser.addr
 

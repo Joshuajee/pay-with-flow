@@ -97,7 +97,7 @@ pub contract FlowMerchant {
             let balance: UFix64 = from.balance
             self.TEURVault.deposit(from: <- from)
             let paymentId = FlowMerchant.paymentId 
-            emit Deposit(paymentId: paymentId, tx_ref: tx_ref, tokenReceived: SupportedToken.TUSD.rawValue, amount: balance)
+            emit Deposit(paymentId: paymentId, tx_ref: tx_ref, tokenReceived: SupportedToken.TEUR.rawValue, amount: balance)
         }
 
         pub fun generatePaymentId (): UInt256 {

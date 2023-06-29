@@ -40,7 +40,7 @@ export const validateUser = async (req: any) : Promise<{user: User | null, nonce
   const userSession = req.session.user || null
   let nonce = req.session.nonce || null
 
-  if (!nonce && !userSession) {
+  if (!userSession) {
     await createNonceSession(req)
     nonce = req.session.nonce
   }

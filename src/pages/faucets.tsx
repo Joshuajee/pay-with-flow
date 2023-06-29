@@ -31,11 +31,9 @@ export default function Faucets(props: IProps) {
   return (
     <Layout nonce={props.nonce}>
 
-      <AuthCard title='Dashboard'>
+      <AuthCard title='Faucets'>
 
-        <>
-
-          <h3 className='text-xl mb-4'>Supported Tokens</h3>
+        <div className='flex items-center h-[80%]'>
 
           <div className='grid grid-cols-1 md:grid-cols-2 w-full gap-2 '>
 
@@ -49,7 +47,7 @@ export default function Faucets(props: IProps) {
 
           </div>
 
-        </>
+        </div>
 
       </AuthCard>
 

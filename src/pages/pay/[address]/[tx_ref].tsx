@@ -17,6 +17,8 @@ import sendTEUR from '@/flow/transactions/sendTEUR'
 import sendTUSD from '@/flow/transactions/sendTUSD'
 import sendTGBP from '@/flow/transactions/sendTGBP'
 import { fromTokenId, toTokenId } from '@/libs/utils'
+import { toast } from 'react-toastify'
+import { useRouter } from 'next/router'
 
 
 export const getServerSideProps = withIronSessionSsr(async({req, params}) => {
@@ -51,6 +53,8 @@ interface IProps {
 
 export default function Home(props: IProps) {
 
+  const router = useRouter()
+
   const data: Transaction = JSON.parse(props.data)
 
   const [open, setOpen] = useState(false)
@@ -68,6 +72,57 @@ export default function Home(props: IProps) {
     )
   }
 
+  const success = () => {
+    toast.success("Transfer Successful")
+    setTimeout(() => {
+      router.reload()
+    }, 3000)
+  }
+
+  const error = () => {
+    toast.success("Transfer Failed")
+  }
+  
+
+  const pay = () => {
+
+    switch (data.requestedToken) {
+      case 0:
+        return (
+          <button
+            onClick={() => sendFlow(data.address, data.tx_ref as string, Number(data.amount), success, error)}
+            className='bg-purple-700 rounded-md px-8 py-2'>
+            Send Flow 
+          </button>
+        )
+      case 1:
+        return (
+          <button
+            onClick={() => sendTUSD(data.address, data.tx_ref as string, Number(data.amount), success, error)}
+            className='bg-purple-700 rounded-md px-8 py-2'>
+            Send TUSD
+          </button>
+        )
+      case 2:
+        return (
+          <button
+            onClick={() => sendTEUR(data.address, data.tx_ref as string, Number(data.amount), success, error)}
+            className='bg-purple-700 rounded-md px-8 py-2'>
+            Send TEUR
+          </button>
+        )
+      case 3:
+        return (
+          <button
+            onClick={() => sendTGBP(data.address, data.tx_ref as string, Number(data.amount), success, error)}
+            className='bg-purple-700 rounded-md px-8 py-2'>
+            Send TGBP
+          </button>
+        )
+
+    }
+
+  }
 
   return (
     <Layout hideSidebar={true} nonce={props.nonce}>
@@ -100,34 +155,12 @@ export default function Home(props: IProps) {
 
             </div>
 
-            <div className='flex justify-center p-4'>
-
-              <button
-                onClick={() => sendFlow(data.address, data.tx_ref as string, Number(data.amount))}
-                className='bg-purple-700 rounded-md px-8 py-2'>
-                Send Flow
-              </button>
-
-
-              <button
-                onClick={() => sendTUSD(data.address, data.tx_ref as string, Number(data.amount))}
-                className='bg-purple-700 rounded-md px-8 py-2'>
-                Send TUSD
-              </button>
-
-              <button
-                onClick={() => sendTEUR(data.address, data.tx_ref as string, Number(data.amount))}
-                className='bg-purple-700 rounded-md px-8 py-2'>
-                Send TEUR
-              </button>
-
-              <button
-                onClick={() => sendTGBP(data.address, data.tx_ref as string, Number(data.amount))}
-                className='bg-purple-700 rounded-md px-8 py-2'>
-                Send TGBP
-              </button>
-
-            </div>
+            {
+              data.status !== "paid" &&  
+                <div className='flex justify-center p-4'> 
+                  {pay()}
+                </div>
+            }
 
           </div>
 

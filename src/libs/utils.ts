@@ -28,8 +28,10 @@ export const contract = process.env.NEXT_PUBLIC_CONTRACT_ACCT
 export const contractName = "FlowMerchant"
 
 export const tokenLists = [
-    { name : SUPPORTED_TOKENS.FLOW, value: SUPPORTED_TOKENS.FLOW },
-    { name : SUPPORTED_TOKENS.TEUR, value: SUPPORTED_TOKENS.TEUR},
+    { name : SUPPORTED_TOKENS.FLOW, value: 0 },
+    { name : SUPPORTED_TOKENS.TUSD, value: 1 },
+    { name : SUPPORTED_TOKENS.TEUR, value: 2 },
+    { name : SUPPORTED_TOKENS.TGBP, value: 3 },
 ]
 
 
