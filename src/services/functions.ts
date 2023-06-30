@@ -31,3 +31,17 @@ export const generateTransactionID = async (): Promise<string> => {
 
     return id
 }
+
+
+
+export const generateKey = (type: "secret" | "public") : string => {
+
+    const id = generateUniqueId({
+        length: 32,
+        useLetters: true
+    });
+
+    if (type === "secret") return "sk_key_" + id
+
+    return "pk_key_" + id
+}

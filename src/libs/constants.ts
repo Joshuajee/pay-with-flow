@@ -2,7 +2,8 @@ export enum LINKS {
     DASHBOARD =  "/",
     TRANSACTIONS = "/transactions",
     INTEGRATION = "/integration",
-    PROFILE = "/profile"
+    PROFILE = "/profile",
+    FAUCETS = "/faucets"
 }
 
 

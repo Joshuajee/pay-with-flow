@@ -4,9 +4,7 @@ import { sessionCookie, validateUserApi } from '@/services/session';
 import prisma from '@/libs/prisma';
 import { ApiResponse } from '@/libs/types';
 import ServerError from '@/services/errors/serverError';
-import Transactions from "../transactions";
 import { generateTransactionID } from '@/services/functions';
-
 
 
 export default withIronSessionApiRoute(
@@ -25,10 +23,11 @@ export default withIronSessionApiRoute(
             const transaction = await prisma.transaction.create({
                 data: {
                     tx_ref:  tx_ref,
-                    addressTo: user.address,
+                    address: user.address,
                     amount: Number(amount),
                     narration,
                     source: "app",
+                    requestedToken: Number(token)
                 }
             })
 

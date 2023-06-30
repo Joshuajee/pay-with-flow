@@ -1,4 +1,3 @@
-import { useAuth } from "@/contexts/AuthContext"
 import { useState } from "react"
 import { toast } from "react-toastify"
 import ModalWrapper from "./ModalWrapper"
@@ -7,10 +6,11 @@ import useInput from "@/hooks/useInput";
 import LoadingButton from "../utils/LoadingButton";
 import Textarea from "../utils/Textarea";
 import Select from "../utils/Select";
-import { tokenFormat, tokenLists } from "@/libs/utils";
+import { tokenLists } from "@/libs/utils";
 import axios, { AxiosResponse } from "axios";
 import Alert from "../utils/Alert";
 import { PAYMENT_LINK } from "@/libs/constants";
+import { Transaction } from "@prisma/client";
 
 
 interface IProps {
@@ -38,21 +38,21 @@ const CreatePaymentForm = ({open, handleClose} : IProps) => {
 
         try {
             
-            const body = { 
-                token: selectedToken, 
-                amount: amount.value, 
-                narration: narration.value 
-            }
+            const body = { token: selectedToken, amount: amount.value, narration: narration.value }
             
             const res : AxiosResponse = await axios.post("/api/request-pay", body)
             
-            const data  = res?.data
+            const data = res?.data
 
-            const { addressTo, tx_ref } = data?.data
+            const { address, tx_ref } = data?.data as Transaction
 
-            setLink(`${PAYMENT_LINK}/${addressTo}/${tx_ref}`)
+            setLink(`${PAYMENT_LINK}/${address}/${tx_ref}`)
 
             toast.success(data.message)
+
+            amount.setValue("")
+
+            narration.setValue("")
 
         } catch (e) {
             if (axios.isAxiosError(e)) {
@@ -66,6 +66,11 @@ const CreatePaymentForm = ({open, handleClose} : IProps) => {
         
     }
 
+    const copyLink = () => {
+        navigator.clipboard.writeText(link as string)
+        toast.success("Text copied to clipboard")
+    }
+
     return (
         <ModalWrapper title={"Create Payment Link"} open={open} handleClose={handleClose}>
 
@@ -75,7 +80,7 @@ const CreatePaymentForm = ({open, handleClose} : IProps) => {
                     <div className="mb-4">
                         <Alert type="success">
                             <p>Copy the link and share with your customer </p>
-                            {link}
+                            <p onClick={copyLink} className="cursor-pointer">{link}</p>
                         </Alert>
                     </div>
                 }

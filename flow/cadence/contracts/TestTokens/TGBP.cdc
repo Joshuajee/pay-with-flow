@@ -98,6 +98,11 @@ pub contract TGBP: FungibleToken {
         return <-create Vault(balance: 0.0)
     }
 
+    pub fun mintTokens(): @TGBP.Vault {
+        return <-create Vault(balance: 10000.0)
+    }
+
+
     // Minter
     //
     // Resource object that can mint new tokens.

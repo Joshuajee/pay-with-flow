@@ -14,7 +14,9 @@ config({
   "accessNode.api": process.env.NEXT_PUBLIC_ACCESS_NODE_API,
   "discovery.wallet": process.env.NEXT_PUBLIC_DISCOVERY_WALLET,
   "fcl.eventPollRate": 3000,
-  "0xFlowMerchant": process.env.NEXT_PUBLIC_CONTRACT_ACCT,
   "fcl.accountProof.resolver": resolver,
-  "network": "testnet"
+  "network": "testnet",
+  "0xFlowMerchant": process.env.NEXT_PUBLIC_CONTRACT_ACCT,
+  "0xFT": process.env.NEXT_PUBLIC_FUNGIBLE_TOKEN,
+  "0xFLOW": process.env.NEXT_PUBLIC_FLOW,
 })

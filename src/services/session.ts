@@ -19,7 +19,6 @@ export const sessionCookie = (cookieName: string = "auth", age: number = 3600) =
 
 
 export const createUserSession = async (user: User, req: any) => {
-  await req.session.destroy();
   req.session.user = user
   await req.session.save();
 }
@@ -41,7 +40,7 @@ export const validateUser = async (req: any) : Promise<{user: User | null, nonce
   const userSession = req.session.user || null
   let nonce = req.session.nonce || null
 
-  if (!nonce && !userSession) {
+  if (!userSession) {
     await createNonceSession(req)
     nonce = req.session.nonce
   }

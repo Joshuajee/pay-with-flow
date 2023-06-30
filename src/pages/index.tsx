@@ -1,13 +1,13 @@
 import { withIronSessionSsr } from 'iron-session/next'
-import '@/flow/config'
+import { useContext, useState } from 'react'
 import Layout from '@/components/utils/Layout'
 import AuthCard from '@/components/utils/AuthCard'
 import { sessionCookie, validateUser } from '@/services/session'
 import TokenControl from '@/components/utils/TokenControl'
-import LoadingButton from '@/components/utils/LoadingButton'
 import LoadingButtonSM from '@/components/utils/LoadingButtonSM'
-import { useState } from 'react'
 import CreatePaymentForm from '@/components/modals/CreatePaymentForm'
+import { SUPPORTED_TOKENS } from '@/libs/enums'
+import { AuthContext } from '@/contexts/AuthContext'
 
 
 export const getServerSideProps = withIronSessionSsr(async({req}) => {
@@ -31,6 +31,8 @@ interface IProps {
 
 export default function Home(props: IProps) {
 
+  const { userProfile } = useContext(AuthContext)
+
   const [open, setOpen] = useState(false)
 
   const handleClose = () => {
@@ -39,6 +41,7 @@ export default function Home(props: IProps) {
 
   return (
     <Layout nonce={props.nonce}>
+
       <AuthCard title='Dashboard'>
 
         <>
@@ -52,8 +55,15 @@ export default function Home(props: IProps) {
           <h3 className='text-xl mb-4'>Supported Tokens</h3>
 
           <div className='grid grid-cols-1 md:grid-cols-2 w-full gap-2 '>
-            <TokenControl />
-            <TokenControl />
+
+            <TokenControl token={SUPPORTED_TOKENS.FLOW}  />
+
+            <TokenControl token={SUPPORTED_TOKENS.TUSD} />
+
+            <TokenControl token={SUPPORTED_TOKENS.TEUR} />
+
+            <TokenControl token={SUPPORTED_TOKENS.TGBP} />
+            
           </div>
 
         </>

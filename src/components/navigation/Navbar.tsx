@@ -9,8 +9,6 @@ import { useRouter } from "next/router"
 
 const Navbar = () => {
 
-    const { userProfile, balance } = useAuth()
-
     const scrollPosition = useScroll()
 
     const trigger = scrollPosition > 80
@@ -18,7 +16,7 @@ const Navbar = () => {
     return (
         <header className={`${(trigger ) ? "bg-[#202128] shadow-lg" : "" }text-slate-100 fixed w-full body-font z-10 flex justify-center`}>
             <div className="container w-full flex flex-wrap justify-between item-center py-2 lg:py-3 px-2">
-                <Link href={"/"} className="pt-2 md:pt-0 block title-font text-2xl md:text-3xl font-bold">
+                <Link href={"/"} className="pt-2 md:pt-0 block title-font text-lg sm:text-2xl md:text-3xl font-bold">
                     Flow Merchant
                 </Link>
 

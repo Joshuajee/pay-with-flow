@@ -1,5 +1,12 @@
 {
 	"contracts": {
+		"FungibleToken": {
+			"source": "./cadence/contracts/FungibleToken.cdc",
+			"aliases": {
+			  "testnet": "9a0766d93b6608b7",
+			  "emulator": "ee82856bf20e2aa6"
+			}
+		},
 		"TUSD": "./flow/cadence/contracts/TestTokens/TUSD.cdc",
 		"TGBP": "./flow/cadence/contracts/TestTokens/TGBP.cdc",
 		"TEUR": "./flow/cadence/contracts/TestTokens/TEUR.cdc",

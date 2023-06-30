@@ -22,7 +22,7 @@ const ModalWrapper = (props: IProps) => {
 
             <div className="fixed flex justify-center items-center h-screen w-screen">
 
-                <div data-aos="slide-up" className={`overflow-y-auto mx-4 bg-white rounded-lg w-full ${lg ? 'max-w-[1000px] max-h-[80vh]' : 'max-w-[500px] min-h-[150px]'} `}>
+                <div className={`overflow-y-auto mx-4 bg-gray-700 rounded-lg w-full ${lg ? 'max-w-[1000px] max-h-[80vh]' : 'max-w-[500px] min-h-[150px]'} `}>
 
                     <div className="flex justify-between border-b-[1px] pb-2 border-slate-200"> 
                         <h2 className="font-semibold text-lg pl-4 pt-2">{title}</h2> 

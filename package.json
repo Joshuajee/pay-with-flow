@@ -7,7 +7,10 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "start-emulator": "flow emulator -v"
+    "start-emulator": "flow emulator -v",
+    "dev-worker": "nodemon worker.js",
+    "start-worker": "node worker.js",
+    "start-prod": "next start && node worker.js"
   },
   "dependencies": {
     "@onflow/fcl": "^1.4.1",
@@ -19,14 +22,13 @@
     "@types/react-dom": "18.2.5",
     "autoprefixer": "10.4.14",
     "bcryptjs": "^2.4.3",
+    "crypto": "^1.0.1",
     "dateformat": "^5.0.3",
     "eslint": "8.42.0",
     "eslint-config-next": "13.4.6",
     "generate-unique-id": "^2.0.1",
     "iron-session": "^6.3.1",
     "next": "13.4.6",
-    "nodemailer": "^6.9.3",
-    "path": "^0.12.7",
     "postcss": "8.4.24",
     "prisma": "^4.16.0",
     "react": "18.2.0",

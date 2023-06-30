@@ -79,6 +79,8 @@ export default function AuthProvider({ children } : IProps) {
     fcl.signUp();
   };
 
+  console.log(userProfile)
+  
   const value = {
     currentUser,
     userProfile,
