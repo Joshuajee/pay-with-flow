@@ -1,22 +1,17 @@
 import { withIronSessionSsr } from 'iron-session/next'
 import '@/flow/config'
 import Layout from '@/components/utils/Layout'
-import AuthCard from '@/components/utils/AuthCard'
 import { sessionCookie, validateUser } from '@/services/session'
-import TokenControl from '@/components/utils/TokenControl'
-import LoadingButton from '@/components/utils/LoadingButton'
-import LoadingButtonSM from '@/components/utils/LoadingButtonSM'
 import { useState } from 'react'
 import CreatePaymentForm from '@/components/modals/CreatePaymentForm'
 import prisma from '@/libs/prisma'
-import { NextPageContext } from 'next'
 import Card from '@/components/utils/Card'
 import { Transaction } from '@prisma/client'
 import sendFlow from '@/flow/transactions/sendFlow'
 import sendTEUR from '@/flow/transactions/sendTEUR'
 import sendTUSD from '@/flow/transactions/sendTUSD'
 import sendTGBP from '@/flow/transactions/sendTGBP'
-import { fromTokenId, toTokenId } from '@/libs/utils'
+import { fromTokenId } from '@/libs/utils'
 import { toast } from 'react-toastify'
 import { useRouter } from 'next/router'
 
@@ -131,38 +126,40 @@ export default function Home(props: IProps) {
 
         <div className='flex mt-4 h-[80%] justify-center items-center'>
 
-          <div className=''>
+          { data &&
 
-            <div className='border-[1px] p-4 rounded-md w-full max-w-[600px]'>
+            <div className=''>
 
-              <div className='grid grid-cols-6 gap-4'>
+              <div className='border-[1px] p-4 rounded-md w-full max-w-[600px]'>
 
-                {cell("Tx Ref", data.tx_ref)}
+                <div className='grid grid-cols-6 gap-4'>
 
-                {cell("Status", data.status)}
+                  {cell("Tx Ref", data.tx_ref)}
 
-                {cell("Amount",  `${data.amount} ${fromTokenId(Number(data.requestedToken))}`)}
+                  {cell("Status", data.status)}
 
-                {cell("Amount Paid", `${data.amountPaid} ${fromTokenId(Number(data.requestedToken))}`)}
+                  {cell("Amount",  `${data.amount} ${fromTokenId(Number(data.requestedToken))}`)}
 
-                {cell("Receiptient", data.address)}
+                  {cell("Amount Paid", `${data.amountPaid} ${fromTokenId(Number(data.requestedToken))}`)}
 
-                {cell("Source", data.source)}
+                  {cell("Receiptient", data.address)}
 
-                {cell("Narration", data.narration)}
+                  {cell("Source", data.source)}
+
+                  {cell("Narration", data.narration)}
+
+                </div>
 
               </div>
 
+              {
+                data.status !== "paid" &&  
+                  <div className='flex justify-center p-4'> {pay()} </div>
+              }
+
             </div>
 
-            {
-              data.status !== "paid" &&  
-                <div className='flex justify-center p-4'> 
-                  {pay()}
-                </div>
-            }
-
-          </div>
+          }
 
         </div>
 

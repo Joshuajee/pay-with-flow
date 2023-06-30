@@ -10,7 +10,7 @@ interface IProps {
     title: string;
 }
 
-const AuthCard = ({ children, title } :IProps) => {
+const AuthCard = ({ children, title } : IProps) => {
 
     const { isLoggedIn, profileExists, loadProfile } = useContext(AuthContext)
 

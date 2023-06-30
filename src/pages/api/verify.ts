@@ -6,6 +6,7 @@ import prisma from '@/libs/prisma';
 import { ApiResponse } from '@/libs/types';
 import ServerError from '@/services/errors/serverError';
 import { PROJECT_NAME } from '@/libs/constants';
+import { generateKey } from "@/services/functions";
 
 
 
@@ -17,6 +18,7 @@ export default withIronSessionApiRoute(
             const data = JSON.parse(req.body.data)
 
             if (process.env.ENVIRONMENT != "test") {
+
                 const { nonce } = await validateUserApi(req)
 
                 if (!nonce) return new ServerError(res, 400, "Authentication Failed, Unknown Nonce")
@@ -27,6 +29,7 @@ export default withIronSessionApiRoute(
 
                 if (!verified) return new ServerError(res, 400, "Authentication Failed, Verification Failed")
             }
+
             let user = await prisma.user.findUnique({
                 where: {
                     address: data.address
@@ -36,7 +39,9 @@ export default withIronSessionApiRoute(
             if (!user) {
                 user = await prisma.user.create({
                     data: {
-                        address: data.address
+                        address: data.address,
+                        secretKey: generateKey("secret"),
+                        publicKey: generateKey("public")
                     }
                 })
             }

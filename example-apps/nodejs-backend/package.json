@@ -1,0 +1,18 @@
+{
+  "name": "flow-merchant-example",
+  "version": "1.0.0",
+  "description": "A simple backend to test flow merchant",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "dev": "nodemon index.js",
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "axios": "^1.4.0",
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.22"
+  }
+}

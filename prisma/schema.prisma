@@ -32,7 +32,11 @@ model User {
   firstName       String?    
   lastName        String?   
   email           String? 
+  publicKey       String    @unique  @map(name: "public_key")
+  secretKey       String    @unique  @map(name: "secret_key")
+  webhookUrl      String?            @map(name: "webhook_url")
   transactions    Transaction[]
+  payments        Payment[]
   createdAt       DateTime  @default(now()) @map(name: "created_at")
   updatedAt       DateTime  @updatedAt @map(name: "updated_at")
 }
@@ -62,5 +66,7 @@ model Payment {
   tx_ref          String     
   amount          Decimal   @default(0)
   requestedToken  Int  @default(0)
+  userId          Int?
+  user            User? @relation(fields: [userId], references: [id])
   createdAt       DateTime  @default(now()) @map(name: "created_at")
 }

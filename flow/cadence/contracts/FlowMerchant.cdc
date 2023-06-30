@@ -22,6 +22,12 @@ pub contract FlowMerchant {
     pub var merchantCount: UInt256
     pub var paymentId: UInt256
 
+    pub fun generatePaymentId (): UInt256 {
+        FlowMerchant.paymentId = FlowMerchant.paymentId + 1
+        return  FlowMerchant.paymentId
+    }
+
+
     pub resource interface PublicProfileInterface {
         pub var merchantName: String
         pub fun depositFlowToken (from: @FungibleToken.Vault, tx_ref: String)
@@ -45,7 +51,7 @@ pub contract FlowMerchant {
         pub let TGBPVault: @TGBP.Vault
         pub let TEURVault: @TEUR.Vault
         pub var merchantName: String
- 
+
 
         //Withdraw Functions
 
@@ -75,35 +81,31 @@ pub contract FlowMerchant {
         pub fun depositFlowToken (from: @FungibleToken.Vault, tx_ref: String) {
             let balance: UFix64 = from.balance
             self.FlowTokenVault.deposit(from: <- from)
-            let paymentId = FlowMerchant.paymentId 
+            let paymentId = FlowMerchant.generatePaymentId() 
             emit Deposit(paymentId: paymentId, tx_ref: tx_ref, tokenReceived: SupportedToken.FlowToken.rawValue, amount: balance)
         }
 
         pub fun depositTUSD (from: @FungibleToken.Vault, tx_ref: String) {
             let balance: UFix64 = from.balance
             self.TUSDVault.deposit(from: <- from)
-            let paymentId = FlowMerchant.paymentId 
+            let paymentId = FlowMerchant.generatePaymentId() 
             emit Deposit(paymentId: paymentId, tx_ref: tx_ref, tokenReceived: SupportedToken.TUSD.rawValue, amount: balance)
         }
 
         pub fun depositTGBP (from: @FungibleToken.Vault, tx_ref: String) {
             let balance: UFix64 = from.balance
             self.TGBPVault.deposit(from: <- from)
-            let paymentId = FlowMerchant.paymentId 
+            let paymentId = FlowMerchant.generatePaymentId() 
             emit Deposit(paymentId: paymentId, tx_ref: tx_ref, tokenReceived: SupportedToken.TGBP.rawValue, amount: balance)
         }
 
         pub fun depositTEUR (from: @FungibleToken.Vault, tx_ref: String) {
             let balance: UFix64 = from.balance
             self.TEURVault.deposit(from: <- from)
-            let paymentId = FlowMerchant.paymentId 
+            let paymentId = FlowMerchant.generatePaymentId() 
             emit Deposit(paymentId: paymentId, tx_ref: tx_ref, tokenReceived: SupportedToken.TEUR.rawValue, amount: balance)
         }
 
-        pub fun generatePaymentId (): UInt256 {
-            FlowMerchant.paymentId = FlowMerchant.paymentId + 1
-            return  FlowMerchant.paymentId
-        }
 
         init(merchantName: String) {
             self.merchantName = merchantName

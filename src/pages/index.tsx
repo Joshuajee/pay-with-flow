@@ -63,6 +63,7 @@ export default function Home(props: IProps) {
             <TokenControl token={SUPPORTED_TOKENS.TEUR} />
 
             <TokenControl token={SUPPORTED_TOKENS.TGBP} />
+            
           </div>
 
         </>

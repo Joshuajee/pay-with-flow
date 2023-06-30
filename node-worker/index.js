@@ -1,5 +1,6 @@
 const { PrismaClient } = require('@prisma/client')
 const fcl = require("@onflow/fcl")
+const { postTransaction } = require('./post-webhook')
 require("dotenv").config({ path: "./.env" })
 
 
@@ -40,7 +41,7 @@ fcl.events(event).subscribe(async(eventData) => {
 
   try {
 
-    await prisma.payment.create({
+    const payment = await prisma.payment.create({
       data: {
         paymentId: Number(paymentId),
         amount: Number(amount),
@@ -50,12 +51,7 @@ fcl.events(event).subscribe(async(eventData) => {
     })
 
     const transaction = await prisma.transaction.findUnique({ 
-      where: { tx_ref }, 
-      select: { 
-        amount: true,
-        requestedToken: true,
-        amountPaid: true
-      } 
+      where: { tx_ref }
     })
 
     if (transaction) {
@@ -69,6 +65,8 @@ fcl.events(event).subscribe(async(eventData) => {
           }
         })
       }
+
+      await postTransaction(tx_ref, payment) 
 
     } else {
       await prisma.transaction.create({
