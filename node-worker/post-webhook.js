@@ -1,8 +1,9 @@
 const axios = require('axios')
 const { PrismaClient } = require('@prisma/client')
+const crypto = require('crypto');
+
 
 const prisma = new PrismaClient();
-
 
 
 const postTransaction = async (tx_ref, payment) => {
@@ -13,8 +14,6 @@ const postTransaction = async (tx_ref, payment) => {
 
     const address = transaction.address
 
-    console.log(transaction)
-
     try {
 
         const user = await prisma.user.findUnique({
@@ -23,15 +22,26 @@ const postTransaction = async (tx_ref, payment) => {
             }
         })
 
-        const body = { transaction, payment }
+        const payload = JSON.stringify({ transaction, payment })
+
+        const hashAlgo = crypto.createHash('sha256')
+
+        const signature = hashAlgo.update(payload).digest('hex');
+
+        console.log(signature)
+
+        const body = { transaction, payment, signature }
 
         await axios.post(user.webhookUrl, body)
 
+
+
     } catch (e) {
-        //console.error(e)
+        console.error(e)
     }
 
 }
+
 
 
 module.exports = {

@@ -1,0 +1,21 @@
+{
+  "name": "flow-merchant-sdk-beta",
+  "version": "1.0.0",
+  "description": "A simple backend to test flow merchant",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "dev": "nodemon index.js",
+    "start": "node index.js",
+    "test": "node test/script.test.js"
+  },
+  "dependencies": {
+    "axios": "^1.4.0",
+    "bcryptjs": "^2.4.3",
+    "crypto": "^1.0.1",
+    "crypto-js": "^4.1.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.22"
+  }
+}

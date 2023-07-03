@@ -16,8 +16,6 @@ export default withIronSessionApiRoute(
 
             const secretKey = req.headers["secret-key"]
 
-            console.log(secretKey)
-
             if (!secretKey) return new ServerError(res, 401, "Secret Key is Missing")
 
             const user = await prisma.user.findUnique({
@@ -29,8 +27,6 @@ export default withIronSessionApiRoute(
             if (!user) return new ServerError(res, 401, "Invalid secret key")
 
             const tx_ref = await generateTransactionID()
-
-            console.log(user)
 
             const transaction = await prisma.transaction.create({
                 data: {

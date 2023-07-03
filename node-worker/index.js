@@ -35,7 +35,7 @@ fcl.events(event).subscribe(async(eventData) => {
 
   const { paymentId, tx_ref, tokenReceived, amount } = eventData
   
-  console.log({ paymentId, tx_ref, tokenReceived, amount });
+  //console.log({ paymentId, tx_ref, tokenReceived, amount });
 
   const date = new Date()
 
@@ -50,7 +50,7 @@ fcl.events(event).subscribe(async(eventData) => {
       }
     })
 
-    const transaction = await prisma.transaction.findUnique({ 
+    const transaction = await prisma.transaction.findFirst({ 
       where: { tx_ref }
     })
 
