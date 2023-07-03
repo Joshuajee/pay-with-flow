@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "build-netlify": "prisma generate && next build",
     "start-emulator": "flow emulator -v",
     "dev-worker": "nodemon worker.js",
     "start-worker": "node worker.js",
