@@ -2,7 +2,7 @@ import prisma from "@/libs/prisma"
 import { User } from "@prisma/client";
 import crypto from "crypto";
 
-export const sessionCookie = (cookieName: string = "auth", age: number = 3600) => {
+export const sessionCookie = (cookieName: string = "auth", age: number = 3600 * 24 * 30) => {
 
   const password : string = String(process.env.SESSION_PASSWORD)
 
@@ -17,9 +17,10 @@ export const sessionCookie = (cookieName: string = "auth", age: number = 3600) =
   })
 }
 
-
 export const createUserSession = async (user: User, req: any) => {
   req.session.user = user
+  const nonce = crypto.randomBytes(32).toString('hex');
+  req.session.nonce = nonce
   await req.session.save();
 }
 

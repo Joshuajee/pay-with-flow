@@ -51,8 +51,7 @@ model Transaction {
   narration       String?
   source          TransactionSource @default(unknown)
   status          TransactionStatus @default(pending)
-  userId          Int?
-  user            User? @relation(fields: [userId], references: [id])
+  user            User? @relation(fields: [address], references: [address])
   metadata        Json?
   requestedToken  Int?  @default(0)
   createdAt       DateTime  @default(now()) @map(name: "created_at")
@@ -62,7 +61,7 @@ model Transaction {
 
 model Payment {
   id              Int       @id @default(autoincrement())
-  paymentId       Int
+  paymentId       String
   tx_ref          String     
   amount          Decimal   @default(0)
   requestedToken  Int  @default(0)
