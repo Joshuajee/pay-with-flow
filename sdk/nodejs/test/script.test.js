@@ -10,8 +10,8 @@ const Init = async() => {
 
         const payload = {
             amount: 100, 
-            requestedToken: 0,
-            meta: {
+            requestedToken: "0",
+            metadata: {
                 userId: "22222"
             } 
         }

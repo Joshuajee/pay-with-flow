@@ -12,7 +12,7 @@ const ConnectionBtn = () => {
 
     const { currentUser, logOut, logIn } = useAuth()
 
-    const router = useRouter()
+    console.log(currentUser)
 
     const notAuthenticated = (
         <button 

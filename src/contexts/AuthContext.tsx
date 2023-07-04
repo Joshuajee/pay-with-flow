@@ -16,10 +16,8 @@ interface IProps {
 export default function AuthProvider({ children } : IProps) {
   
   const [currentUser, setUser] = useState({ loggedIn: false, addr: undefined });
-  const [checkProfile, setCheckProfile] = useState(false);
   const [userProfile, setProfile] = useState(null);
   const [profileExists, setProfileExists] = useState(false);
-  const [balance, setBalance] = useState(0)
 
   useEffect(() => {
     fcl.currentUser.subscribe(setUser)
@@ -54,23 +52,37 @@ export default function AuthProvider({ children } : IProps) {
 
 
   const logIn = async () => {
-    let res = await fcl.authenticate();
+    const account = await fcl.authenticate();
   
-    const accountProofService = res.services.find((services: any) => services.type === 'account-proof' );
+    //const accountProofService = account.services.find((services: any) => services.type === 'account-proof' );
 
-    if (accountProofService) {
-      try {
-        await axios.post(
-          API_ROUTES.VERIFY, 
-          { data: JSON.stringify(accountProofService.data) }
-        )
-      } catch (e) {
-        if (axios.isAxiosError(e)) {
-          toast.error(e?.response?.data?.message)
-        } else {
-          toast.error("An error occurred")
-          console.error(e);
-        }
+    // if (accountProofService) {
+    //   try {
+    //     await axios.post(
+    //       API_ROUTES.VERIFY, 
+    //       { data: JSON.stringify(accountProofService.data) }
+    //     )
+    //   } catch (e) {
+    //     if (axios.isAxiosError(e)) {
+    //       toast.error(e?.response?.data?.message)
+    //     } else {
+    //       toast.error("An error occurred")
+    //       console.error(e);
+    //     }
+    //   }
+    // }
+
+    try {
+      await axios.post(
+        API_ROUTES.VERIFY_TEST, 
+        { data: JSON.stringify({address: account?.addr}) }
+      )
+    } catch (e) {
+      if (axios.isAxiosError(e)) {
+        toast.error(e?.response?.data?.message)
+      } else {
+        toast.error("An error occurred")
+        console.error(e);
       }
     }
   }
@@ -79,7 +91,6 @@ export default function AuthProvider({ children } : IProps) {
     fcl.signUp();
   };
 
-  console.log(userProfile)
   
   const value = {
     currentUser,

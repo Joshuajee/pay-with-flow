@@ -39,19 +39,18 @@ export const resolveTransaction = async (cadence: string, args: any, callback?: 
 
     try {
 
-        const limit = 500;
+        const limit = 5000;
 
         const txId = await mutate({ cadence, args, limit });
       
         console.log("Waiting for transaction to be sealed...");
       
-        const txDetails = await tx(txId).onceSealed();
-      
-        console.log({ txDetails });
+        await tx(txId).onceSealed();
 
         callback?.()
 
     } catch (e) {
+        console.log(e)
         errCallback?.()
     }
 
@@ -86,4 +85,9 @@ export const fromTokenId = (id: number): SUPPORTED_TOKENS => {
         default:
             return SUPPORTED_TOKENS.FLOW
     }
+}
+
+
+export const getPage = (page: number, take: number = 10) => {
+    return { take, skip: (page - 1) * take }
 }

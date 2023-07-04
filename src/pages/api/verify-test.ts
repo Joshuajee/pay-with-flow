@@ -17,16 +17,7 @@ export default withIronSessionApiRoute(
 
             const data = JSON.parse(req.body.data)
 
-            const { nonce } = await validateUserApi(req)
-
-            if (!nonce) return new ServerError(res, 400, "Authentication Failed, Unknown Nonce")
-
-            if (data.nonce != nonce) return new ServerError(res, 400, "Authentication Failed, Unknown Nonce")
-
-            const verified = await fcl.AppUtils.verifyAccountProof(PROJECT_NAME, data)
-
-            if (!verified) return new ServerError(res, 400, "Authentication Failed, Verification Failed")
-
+            console.log(data)
 
             let user = await prisma.user.findUnique({
                 where: {

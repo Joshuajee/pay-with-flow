@@ -14,6 +14,7 @@ import sendTGBP from '@/flow/transactions/sendTGBP'
 import { fromTokenId } from '@/libs/utils'
 import { toast } from 'react-toastify'
 import { useRouter } from 'next/router'
+import PayIncrementalFI from '@/components/modals/PayIncrementalFI'
 
 
 export const getServerSideProps = withIronSessionSsr(async({req, params}) => {
@@ -52,6 +53,8 @@ export default function Home(props: IProps) {
 
   const data: Transaction = JSON.parse(props.data)
 
+  const amount = Number(data.amount).toFixed(4)
+
   const [open, setOpen] = useState(false)
 
   const handleClose = () => {
@@ -75,7 +78,7 @@ export default function Home(props: IProps) {
   }
 
   const error = () => {
-    toast.success("Transfer Failed")
+    toast.error("Transfer Failed")
   }
   
 
@@ -85,33 +88,33 @@ export default function Home(props: IProps) {
       case 0:
         return (
           <button
-            onClick={() => sendFlow(data.address, data.tx_ref as string, Number(data.amount), success, error)}
-            className='bg-purple-700 rounded-md px-8 py-2'>
-            Send Flow 
+            onClick={() => sendFlow(data.address, data.tx_ref as string, Number(amount), success, error)}
+            className='bg-green-700 hover:bg-green-500 rounded-md px-8 py-2'>
+            Pay with Flow 
           </button>
         )
       case 1:
         return (
           <button
-            onClick={() => sendTUSD(data.address, data.tx_ref as string, Number(data.amount), success, error)}
-            className='bg-purple-700 rounded-md px-8 py-2'>
-            Send TUSD
+            onClick={() => sendTUSD(data.address, data.tx_ref as string, Number(amount), success, error)}
+            className='bg-green-700 hover:bg-green-500 rounded-md px-8 py-2'>
+            Pay with TUSD
           </button>
         )
       case 2:
         return (
           <button
-            onClick={() => sendTEUR(data.address, data.tx_ref as string, Number(data.amount), success, error)}
-            className='bg-purple-700 rounded-md px-8 py-2'>
-            Send TEUR
+            onClick={() => sendTEUR(data.address, data.tx_ref as string, Number(amount), success, error)}
+            className='bg-green-700  hover:bg-green-500 rounded-md px-8 py-2'>
+            Pay with TEUR
           </button>
         )
       case 3:
         return (
           <button
-            onClick={() => sendTGBP(data.address, data.tx_ref as string, Number(data.amount), success, error)}
-            className='bg-purple-700 rounded-md px-8 py-2'>
-            Send TGBP
+            onClick={() => sendTGBP(data.address, data.tx_ref as string, Number(amount), success, error)}
+            className='bg-green-700 hover:bg-green-500 rounded-md px-8 py-2'>
+            Pay with TGBP
           </button>
         )
 
@@ -138,9 +141,9 @@ export default function Home(props: IProps) {
 
                   {cell("Status", data.status)}
 
-                  {cell("Amount",  `${data.amount} ${fromTokenId(Number(data.requestedToken))}`)}
+                  {cell("Amount",  `${amount} ${fromTokenId(Number(data.requestedToken))}`)}
 
-                  {cell("Amount Paid", `${data.amountPaid} ${fromTokenId(Number(data.requestedToken))}`)}
+                  {data?.status !== "pending" && cell("Amount Paid", `${data.amountPaid} ${fromTokenId(Number(data.requestedToken))}`)}
 
                   {cell("Receiptient", data.address)}
 
@@ -154,7 +157,14 @@ export default function Home(props: IProps) {
 
               {
                 data.status !== "paid" &&  
-                  <div className='flex justify-center p-4'> {pay()} </div>
+                  <div className='flex justify-center p-4 gap-3'> 
+                    {pay()} 
+                    <button
+                      onClick={() => setOpen(true)}
+                      className='bg-gray-700 hover:bg-gray-500 rounded-md px-8 py-2'>
+                      Pay with another Token
+                    </button>
+                  </div>
               }
 
             </div>
@@ -165,7 +175,7 @@ export default function Home(props: IProps) {
 
       </Card>
 
-      <CreatePaymentForm open={open} handleClose={handleClose} />
+      <PayIncrementalFI open={open} handleClose={handleClose} token={data?.requestedToken} />
 
     </Layout>
   )

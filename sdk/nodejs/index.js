@@ -21,11 +21,7 @@ class FlowMerchant {
 
         try {
 
-            const { amount, requestedToken, metadata } = payload
-
-            const body = {  amount, requestedToken, metadata }
-
-            const response = await axios.post("http://localhost:3000/api/init-payment", body, this.config)
+            const response = await axios.post("https://flow-merchant.netlify.app/api/init-payment", payload, this.config)
 
             resolve(response?.data)
 
@@ -54,12 +50,18 @@ class FlowMerchant {
             const hash = hashAlgo.update(sig).digest('hex');
 
             if (signature === hash) {
+
                 resolve(body)
+            
+            } else {
+            
+                reject("Invalid Signature")
+            
             }
 
         } catch (e) {
 
-            reject(e?.response?.data)
+            reject(e)
                 
         }
     

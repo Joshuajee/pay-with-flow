@@ -10,6 +10,7 @@ import LoadingButton from '@/components/utils/LoadingButton'
 import useInput from '@/hooks/useInput'
 import { useEffect, useState } from 'react'
 import axios, { AxiosResponse } from 'axios'
+import Link from 'next/link'
 
 
 export const getServerSideProps = withIronSessionSsr(async({req}) => {
@@ -82,43 +83,48 @@ export default function Integration(props: IProps) {
 
       <AuthCard title='Integration'>
 
-        <div className='h-full overflow-y-'>
+        <div>
 
-          <div>
-
-            <div className='flex p-1 py-2'>
-              <p>Public Key: {user?.publicKey} </p>
-              <button className='ml-2' onClick={() => copy(user?.publicKey)}>COPY</button>
-            </div>
-
-            <div className='flex p-1 py-2'>
-              <p>Secret Key: {user?.secretKey} </p>
-              <button className='ml-2' onClick={() => copy(user?.secretKey)}>COPY</button>
-            </div>
-
-            <hr />
-
+          <div className='flex p-1 py-2'>
+            <p>Public Key: {user?.publicKey} </p>
+            <button className='ml-2' onClick={() => copy(user?.publicKey)}>COPY</button>
           </div>
 
-          <h3 className='mt-4 text-xl font-bold'>Webhook endpoint</h3>
-
-          <div className='grid'>
-
-            <div className='p-1 py-2 max-w-[600px]'>
-
-              <Input type='webhook' value={webhook.value} onChange={webhook.setValue} />
-
-              <div className='w-[200px]'>
-                <LoadingButton loading={loadingWebhook} onClick={updateWebhook}>Save</LoadingButton>
-              </div>
-
-            </div>
-
-            <hr />
-
+          <div className='flex p-1 py-2'>
+            <p>Secret Key: {user?.secretKey} </p>
+            <button className='ml-2' onClick={() => copy(user?.secretKey)}>COPY</button>
           </div>
+
+          <hr />
 
         </div>
+
+        <h3 className='mt-4 text-xl font-bold'>Webhook endpoint</h3>
+
+        <div className='grid'>
+
+          <div className='p-1 py-2 max-w-[600px]'>
+
+            <Input type='webhook' value={webhook.value} onChange={webhook.setValue} />
+
+            <div className='w-[200px]'>
+              <LoadingButton loading={loadingWebhook} onClick={updateWebhook}>Save</LoadingButton>
+            </div>
+
+          </div>
+
+          <hr />
+
+        </div>
+
+        <h3 className='mt-4 text-xl font-bold'>How to use</h3>
+
+        <p>
+          You can learn more about our api from the link below <br />
+          <Link target='_blank' href={"https://flow-merchant.gitbook.io/flow-merchant/"}>
+            https://flow-merchant.gitbook.io/flow-merchant/
+          </Link>
+        </p>
 
       </AuthCard>
 

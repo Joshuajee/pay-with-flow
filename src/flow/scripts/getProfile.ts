@@ -4,6 +4,7 @@ import { contract } from "@/libs/utils";
 const getProfile = async (account: string | undefined) => { 
 
     if (!account) return
+    
     return await fcl.query({
         cadence: `
         import FlowMerchant from ${contract}

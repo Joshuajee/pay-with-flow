@@ -22,11 +22,23 @@
 		"emulator-account": {
 			"address": "f8d6e0586b0a20c7",
 			"key": "e5869c578b3af289f700bbc6e04f1c23febb42c2225c13da3f09e5d9849b406e"
+		},
+		"my-testnet-account": {
+			"address": "f372e274ed751322",
+			"key": "7155b6b9950405b3beef2add5efda03671802dcb98f188c6c753461d5b7efe72"
 		}
 	},
 	"deployments": {
 		"emulator": {
 			"emulator-account": [
+				"TUSD",
+				"TGBP",
+				"TEUR",
+				"FlowMerchant"
+			]
+		},
+		"testnet": {
+			"my-testnet-account": [
 				"TUSD",
 				"TGBP",
 				"TEUR",
