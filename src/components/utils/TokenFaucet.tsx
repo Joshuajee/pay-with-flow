@@ -25,10 +25,11 @@ const TokenFaucet = ({token}: IProps) => {
         
     const { currentUser } = useContext(AuthContext)
 
-    const address = currentUser.addr
-
-
     const getBalance = useCallback(async() => {
+
+        const address = currentUser.addr
+
+        if (!address) return
 
         switch (token) {
             case SUPPORTED_TOKENS.FLOW:
@@ -47,7 +48,7 @@ const TokenFaucet = ({token}: IProps) => {
                 setBalance(null)
         }
 
-    }, [])
+    }, [currentUser?.addr])
 
 
     const mint = async () => {
@@ -63,7 +64,7 @@ const TokenFaucet = ({token}: IProps) => {
 
         switch (token) {
             case SUPPORTED_TOKENS.FLOW:
-        
+                window.open("https://testnet-faucet.onflow.org/fund-account", '_blank', 'noopener,noreferrer');
                 break
             case SUPPORTED_TOKENS.TUSD:
                 await mintTUSD(success, error)
@@ -82,7 +83,7 @@ const TokenFaucet = ({token}: IProps) => {
 
     useEffect(() => {
         getBalance()
-    }, [])
+    }, [getBalance])
 
 
     return (
@@ -97,7 +98,9 @@ const TokenFaucet = ({token}: IProps) => {
 
             <div>
                 <LoadingButtonSM onClick={mint}>
-                    Mint 10k
+                    {
+                        token === SUPPORTED_TOKENS.FLOW ? "Goto Faucet" : "Mint 10k"
+                    }
                 </LoadingButtonSM>
             </div>
 

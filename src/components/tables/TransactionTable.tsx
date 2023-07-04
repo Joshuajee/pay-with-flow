@@ -3,10 +3,13 @@ import dateFormat from "dateformat";
 import Badge from "@/components/utils/Badge";
 import { useRouter } from "next/router";
 import { fromTokenId } from "@/libs/utils";
+import TableNav from "./tableNav";
 
 interface IProps {
     columns: string[]
     data: Transaction[]
+    page: number,
+    counts: number
 }
 
 interface IPropsTx {
@@ -37,11 +40,11 @@ const TransactionTable = (props: IProps) => {
     }
 
     return (  
-        <div className="overflow-y-scroll">
+        <div className="overflow-y-scroll h-[80vh]">
 
-            <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+            <table className="w-full text-sm text-left text-gray-50 dark:text-gray-400">
             
-                <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                <thead className="text-xs text-white-700 uppercase">
             
                     <tr>
                         {
@@ -62,7 +65,7 @@ const TransactionTable = (props: IProps) => {
                         props?.data?.map((row, index) => {
 
                             return (
-                                <tr onClick={() => view(row.id)} key={index} className="cursor-pointer bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                <tr onClick={() => view(row.id)} key={index} className="cursor-pointer border-b hover:bg-gray-800">
                                     <td className="px-6 py-4">{row.tx_ref}</td>
                                     <td className="px-6 py-4">{Number(row.amount)}</td>
                                     <td className="px-6 py-4">{fromTokenId(Number(row.requestedToken))}</td>
@@ -77,6 +80,8 @@ const TransactionTable = (props: IProps) => {
                 </tbody>
 
             </table>
+
+            <TableNav page={props.page} counts={props.counts} />
         
         </div>
     )

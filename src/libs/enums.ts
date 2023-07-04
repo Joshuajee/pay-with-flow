@@ -16,6 +16,7 @@ export enum ACCOUNT_ROUTES {
 // APIs
 export enum API_ROUTES {
     VERIFY = "/api/verify",
+    VERIFY_TEST = "/api/verify-test",
 }
 
 export enum LOCAL_STORAGE {

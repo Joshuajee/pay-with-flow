@@ -1,38 +1,48 @@
-const axios = require('axios')
-const { PrismaClient } = require('@prisma/client')
+const nodemailer = require("nodemailer");
+require("dotenv").config({ path: "./.env" })
 
-const prisma = new PrismaClient();
+// create reusable transporter object using the default SMTP transport
+const transporter = nodemailer.createTransport({
+  service: "gmail",
+  host: "smtp.gmail.com",
+  port: 587,
+  secure: false,
+  auth: {
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS
+  },
+});
 
 
+const sendReceipt = async (tx_ref, payment) => {
 
-const postTransaction = async (tx_ref, payment) => {
-
-    const transaction = await prisma.transaction.findUnique({ 
-        where: { tx_ref }
-    })
-
-    const address = transaction.address
+    const options = {
+        from: "TESTING <sender@gmail.com>", // sender address
+        to: "evuetaphajoshua@gmail.com", // receiver email
+        subject: "Send email in Node.JS with Nodemailer using Gmail account", // Subject line
+        text: "message"
+        //html: HTML_TEMPLATE(message),
+    }
 
     try {
-
-        const user = await prisma.user.findUnique({
-            where: {
-                address: address
-            }
-        })
-
-        const body = { transaction, payment }
-
-        await axios.post(user.webhookUrl, body)
-
-    } catch (e) {
-        //console.error(e)
+        const info = await transporter.sendMail(options)
+        callback(info);
+    } catch (error) {
+        console.log(error);
     }
 
 }
 
+console.log({
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS
+  })
+
+
+sendReceipt()
+
 
 
 module.exports = {
-    postTransaction
+    sendReceipt
 }

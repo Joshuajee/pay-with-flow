@@ -4,6 +4,7 @@ import AuthCard from '@/components/utils/AuthCard'
 import { sessionCookie, validateUser } from '@/services/session'
 import { SUPPORTED_TOKENS } from '@/libs/enums'
 import TokenFaucet from '@/components/utils/TokenFaucet'
+import Card from '@/components/utils/Card'
 
 
 export const getServerSideProps = withIronSessionSsr(async({req}) => {
@@ -31,7 +32,9 @@ export default function Faucets(props: IProps) {
   return (
     <Layout nonce={props.nonce}>
 
-      <AuthCard title='Faucets'>
+      <Card>
+
+        <h3 className='text-2xl font-bold'>Faucets</h3>
 
         <div className='flex items-center h-[80%]'>
 
@@ -49,7 +52,7 @@ export default function Faucets(props: IProps) {
 
         </div>
 
-      </AuthCard>
+      </Card>
 
     </Layout>
   )

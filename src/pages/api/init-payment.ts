@@ -14,6 +14,8 @@ export default withIronSessionApiRoute(
 
             const { requestedToken, amount, narration, metadata } = req.body
 
+            console.log({ requestedToken, amount, narration, metadata })
+
             const secretKey = req.headers["secret-key"]
 
             if (!secretKey) return new ServerError(res, 401, "Secret Key is Missing")

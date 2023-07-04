@@ -1,5 +1,4 @@
 const express = require("express")
-const axios = require("axios")
 const flowMerchant = require('flow-merchant-sdk-beta')
 
 const FlowMerchant = new flowMerchant("sk_key_qfbb73swa1t7gl2bpayws4ssdiccr7dt")
@@ -16,13 +15,13 @@ app.post("/init", async(req, res) => {
 
     try {
 
-    const body = req.body
+        const body = req.body
 
-    const response = await FlowMerchant.requestPay(body)
+        const response = await FlowMerchant.requestPay(body)
 
-    const data = response?.data
+        const data = response?.data
 
-    console.log(data)
+        console.log(data)
 
     res.send({...data})
 

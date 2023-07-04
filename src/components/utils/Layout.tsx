@@ -25,7 +25,7 @@ const Layout = ({children, nonce, hideSidebar} : IProps) => {
 
                         {   
                             !hideSidebar &&                           
-                                <div className='grid grid-cols-12 w-full md:gap-10'>
+                                <div className='grid grid-cols-12 w-full gap-2 md:gap-4 lg:gap-10'>
 
                                     <div className='hidden md:block md:col-span-3'>
                                         <SideNav />

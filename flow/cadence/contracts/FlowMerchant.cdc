@@ -1,5 +1,5 @@
-import FungibleToken from 0xee82856bf20e2aa6
-import FlowToken from 0x0ae53cb6e3f42a79
+import FungibleToken from 0x9a0766d93b6608b7
+import FlowToken from 0x7e60df042a9c0868
 import TUSD from "./TestTokens/TUSD.cdc"
 import TGBP from "./TestTokens/TGBP.cdc"
 import TEUR from "./TestTokens/TEUR.cdc"
@@ -128,7 +128,7 @@ pub contract FlowMerchant {
     
     }
 
-    pub fun createProfile(merchantName: String, merchantAddress: Address): @Profile {
+    pub fun createProfile(merchantName: String): @Profile {
         return <- create Profile(merchantName: merchantName)
     }
 
