@@ -10,6 +10,7 @@
     "test": "node test/script.test.js"
   },
   "dependencies": {
+    "@onflow/fcl": "^1.4.1",
     "axios": "^1.4.0",
     "crypto": "^1.0.1"
   },

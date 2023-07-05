@@ -1,5 +1,6 @@
 const axios = require('axios')
 const crypto = require('crypto');
+const fcl = require('@onflow/fcl')
 
 
 class FlowMerchant {

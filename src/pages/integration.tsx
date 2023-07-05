@@ -11,6 +11,7 @@ import useInput from '@/hooks/useInput'
 import { useEffect, useState } from 'react'
 import axios, { AxiosResponse } from 'axios'
 import Link from 'next/link'
+import { MdContentCopy } from 'react-icons/md'
 
 
 export const getServerSideProps = withIronSessionSsr(async({req}) => {
@@ -87,12 +88,16 @@ export default function Integration(props: IProps) {
 
           <div className='flex p-1 py-2'>
             <p>Public Key: {user?.publicKey} </p>
-            <button className='ml-2' onClick={() => copy(user?.publicKey)}>COPY</button>
+            <button className='ml-2  hover:bg-gray-700 p-1 rounded-full' onClick={() => copy(user?.publicKey)}>
+              <MdContentCopy />
+            </button>
           </div>
 
           <div className='flex p-1 py-2'>
             <p>Secret Key: {user?.secretKey} </p>
-            <button className='ml-2' onClick={() => copy(user?.secretKey)}>COPY</button>
+            <button className='ml-2 hover:bg-gray-700 p-1 rounded-full' onClick={() => copy(user?.secretKey)}>
+              <MdContentCopy />
+            </button>
           </div>
 
           <hr />

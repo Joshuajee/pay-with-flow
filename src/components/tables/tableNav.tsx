@@ -13,6 +13,7 @@ const TableNav = (props: IProps) => {
     const { counts, page } = props
 
     const [pages, setPages] = useState<number[]>([])
+    const [lastPage, setLastPage] = useState<number>(1)
 
     const { take, skip } = getPage(page)
 
@@ -31,6 +32,8 @@ const TableNav = (props: IProps) => {
         }
 
         setPages(pages)
+
+        setLastPage(1)
 
     }, [counts, page])
 
@@ -59,7 +62,7 @@ const TableNav = (props: IProps) => {
                     })
                 }
 
-                {
+                {   page < lastPage &&
                     <li>
                         <Link href={`/${router.pathname}?page=${page + 1}`} className="block px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700">
                             <span className="sr-only">Next</span>
