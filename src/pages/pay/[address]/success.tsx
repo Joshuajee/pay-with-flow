@@ -81,42 +81,6 @@ export default function Home(props: IProps) {
 
     const pay = () => {
 
-        switch (data.requestedToken) {
-        case 0:
-            return (
-            <button
-                onClick={() => sendFlow(data.address, data.tx_ref as string, Number(data.amount), success, error)}
-                className='bg-purple-700 rounded-md px-8 py-2'>
-                Send Flow 
-            </button>
-            )
-        case 1:
-            return (
-            <button
-                onClick={() => sendTUSD(data.address, data.tx_ref as string, Number(data.amount), success, error)}
-                className='bg-purple-700 rounded-md px-8 py-2'>
-                Send TUSD
-            </button>
-            )
-        case 2:
-            return (
-            <button
-                onClick={() => sendTEUR(data.address, data.tx_ref as string, Number(data.amount), success, error)}
-                className='bg-purple-700 rounded-md px-8 py-2'>
-                Send TEUR
-            </button>
-            )
-        case 3:
-            return (
-            <button
-                onClick={() => sendTGBP(data.address, data.tx_ref as string, Number(data.amount), success, error)}
-                className='bg-purple-700 rounded-md px-8 py-2'>
-                Send TGBP
-            </button>
-            )
-
-        }
-
     }
 
     return (
@@ -153,7 +117,7 @@ export default function Home(props: IProps) {
                 {
                 data.status !== "paid" &&  
                     <div className='flex justify-center p-4'> 
-                    {pay()}
+                 
                     </div>
                 }
 

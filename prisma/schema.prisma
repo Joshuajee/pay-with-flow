@@ -45,7 +45,7 @@ model User {
 model Transaction {
   id              Int       @id @default(autoincrement())
   tx_ref          String    @unique
-  address         String    
+  address         String?    
   amount          Decimal   @default(0)
   amountPaid      Decimal   @default(0) @map(name: "amount_paid")
   narration       String?

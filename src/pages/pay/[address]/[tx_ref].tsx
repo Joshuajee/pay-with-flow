@@ -84,11 +84,13 @@ export default function Home(props: IProps) {
 
   const pay = () => {
 
-    switch (data.requestedToken) {
+    if(!data.address) return
+
+    switch (data?.requestedToken) {
       case 0:
         return (
           <button
-            onClick={() => sendFlow(data.address, data.tx_ref as string, Number(amount), success, error)}
+            onClick={() => sendFlow(data.address as string, data.tx_ref as string, Number(amount), success, error)}
             className='bg-green-700 hover:bg-green-500 rounded-md px-8 py-2'>
             Pay with Flow 
           </button>
@@ -96,7 +98,7 @@ export default function Home(props: IProps) {
       case 1:
         return (
           <button
-            onClick={() => sendTUSD(data.address, data.tx_ref as string, Number(amount), success, error)}
+            onClick={() => sendTUSD(data.address as string, data.tx_ref as string, Number(amount), success, error)}
             className='bg-green-700 hover:bg-green-500 rounded-md px-8 py-2'>
             Pay with TUSD
           </button>
@@ -104,7 +106,7 @@ export default function Home(props: IProps) {
       case 2:
         return (
           <button
-            onClick={() => sendTEUR(data.address, data.tx_ref as string, Number(amount), success, error)}
+            onClick={() => sendTEUR(data.address as string, data.tx_ref as string, Number(amount), success, error)}
             className='bg-green-700  hover:bg-green-500 rounded-md px-8 py-2'>
             Pay with TEUR
           </button>
@@ -112,7 +114,7 @@ export default function Home(props: IProps) {
       case 3:
         return (
           <button
-            onClick={() => sendTGBP(data.address, data.tx_ref as string, Number(amount), success, error)}
+            onClick={() => sendTGBP(data.address as string, data.tx_ref as string, Number(amount), success, error)}
             className='bg-green-700 hover:bg-green-500 rounded-md px-8 py-2'>
             Pay with TGBP
           </button>

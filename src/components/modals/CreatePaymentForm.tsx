@@ -80,7 +80,7 @@ const CreatePaymentForm = ({open, handleClose} : IProps) => {
                     <div className="mb-4">
                         <Alert type="success">
                             <p>Copy the link and share with your customer </p>
-                            <p onClick={copyLink} className="cursor-pointer">{link}</p>
+                            <p onClick={copyLink} className="cursor-pointer underline">{link}</p>
                         </Alert>
                     </div>
                 }
