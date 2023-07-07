@@ -3,7 +3,6 @@ import '@/flow/config'
 import Layout from '@/components/utils/Layout'
 import { sessionCookie, validateUser } from '@/services/session'
 import { useState } from 'react'
-import CreatePaymentForm from '@/components/modals/CreatePaymentForm'
 import prisma from '@/libs/prisma'
 import Card from '@/components/utils/Card'
 import { Transaction } from '@prisma/client'
@@ -14,7 +13,7 @@ import sendTGBP from '@/flow/transactions/sendTGBP'
 import { fromTokenId } from '@/libs/utils'
 import { toast } from 'react-toastify'
 import { useRouter } from 'next/router'
-import PayIncrementalFI from '@/components/modals/PayIncrementalFI'
+import IncrementFIModal from '@/components/incrementFi/IncrementFIModal'
 
 
 export const getServerSideProps = withIronSessionSsr(async({req, params}) => {
@@ -177,7 +176,7 @@ export default function Home(props: IProps) {
 
       </Card>
 
-      <PayIncrementalFI open={open} handleClose={handleClose} token={data?.requestedToken} />
+      <IncrementFIModal address={data.address as string} tx_ref={data.tx_ref} amount={Number(amount)} open={open} handleClose={handleClose} token={data?.requestedToken} />
 
     </Layout>
   )

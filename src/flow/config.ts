@@ -19,4 +19,5 @@ config({
   "0xFlowMerchant": process.env.NEXT_PUBLIC_CONTRACT_ACCT,
   "0xFT": process.env.NEXT_PUBLIC_FUNGIBLE_TOKEN,
   "0xFLOW": process.env.NEXT_PUBLIC_FLOW,
+  "0xIncrementFi": "0x2f8af5ed05bbde0d"
 })

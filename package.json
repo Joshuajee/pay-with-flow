@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@onflow/fcl": "^1.4.1",
+    "@onflow/types": "^1.1.0",
     "@prisma/client": "^4.16.0",
     "@types/bcryptjs": "^2.4.2",
     "@types/node": "20.3.1",

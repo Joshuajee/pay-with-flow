@@ -13,6 +13,8 @@ export enum ACCOUNT_ROUTES {
 }
 
 
+export const FLOW_TOKEN_ADDRESS = String(process.env.NEXT_PUBLIC_FLOW)?.slice(2)
+export const CONTRACT_ADDRESS = String(process.env.NEXT_PUBLIC_CONTRACT_ACCT)?.slice(2)
 
 
 

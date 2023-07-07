@@ -19,10 +19,6 @@ export const getServerSideProps = withIronSessionSsr(async({req, query}) => {
 
   const {skip, take} = getPage(currentPage)
 
-  console.log(page, currentPage)
-
-  console.log({skip, take})
-
   const count = await prisma.transaction.count({
     where: {
       address: user?.address
