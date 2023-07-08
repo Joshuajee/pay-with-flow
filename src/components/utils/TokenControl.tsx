@@ -26,12 +26,15 @@ const TokenControl = ({token}: IProps) => {
     const { userProfile, loadProfile } = useContext(AuthContext)
 
     const [open, setOpen] = useState(false)
+    const [loading, setLoading] = useState(false)
 
     const handleClose = () => {
         setOpen(false)
     }
 
     let balance = 0
+
+    const disabled = amount.error
 
     switch (token) {
         case SUPPORTED_TOKENS.FLOW:
@@ -52,9 +55,12 @@ const TokenControl = ({token}: IProps) => {
 
     const withdrawal = async () => {
 
+        setLoading(true)
+
         const success = () => {
             loadProfile()
             toast.success("Withdrawal was successful")
+            amount.setValue("")
             handleClose()
         }
 
@@ -79,6 +85,8 @@ const TokenControl = ({token}: IProps) => {
                 balance = 0
         }
 
+        setLoading(false)
+
     }
     
     return (
@@ -92,7 +100,7 @@ const TokenControl = ({token}: IProps) => {
             </div>
 
             <div>
-                <LoadingButtonSM onClick={() => setOpen(true)} color="green">
+                <LoadingButtonSM disabled={disabled} onClick={() => setOpen(true)} color="green">
                     Withdraw
                 </LoadingButtonSM>
             </div>
@@ -101,7 +109,7 @@ const TokenControl = ({token}: IProps) => {
 
                 <Input type="number" value={amount.value} onChange={amount.setValue} />
 
-                <LoadingButton onClick={withdrawal}>Withdraw</LoadingButton>
+                <LoadingButton onClick={withdrawal} loading={loading} >Withdraw</LoadingButton>
 
             </ModalWrapper>
         

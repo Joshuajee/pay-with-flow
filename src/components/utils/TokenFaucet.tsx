@@ -3,7 +3,6 @@ import { RiCopperCoinLine } from 'react-icons/ri'
 import { SUPPORTED_TOKENS } from "@/libs/enums";
 import { AuthContext } from "@/contexts/AuthContext";
 import LoadingButtonSM from "./LoadingButtonSM";
-import useInput from "@/hooks/useInput";
 import { toast } from "react-toastify";
 import mintTEUR from "@/flow/transactions/mintTEUR";
 import getTEURBalance from "@/flow/scripts/getTEURBalance";
@@ -22,6 +21,8 @@ interface IProps {
 const TokenFaucet = ({token}: IProps) => {
 
     const [balance, setBalance] = useState(null)
+
+    const [loading, setLoading] = useState(false)
         
     const { currentUser } = useContext(AuthContext)
 
@@ -53,6 +54,8 @@ const TokenFaucet = ({token}: IProps) => {
 
     const mint = async () => {
 
+        setLoading(true)
+
         const success = () => {
             getBalance()
             toast.success("You have received 10k " + token)
@@ -79,6 +82,8 @@ const TokenFaucet = ({token}: IProps) => {
                 console.warn("Invalid Token")
         }
 
+        setLoading(false)
+
     }
 
     useEffect(() => {
@@ -97,7 +102,7 @@ const TokenFaucet = ({token}: IProps) => {
             </div>
 
             <div>
-                <LoadingButtonSM onClick={mint}>
+                <LoadingButtonSM loading={loading} onClick={mint}>
                     {
                         token === SUPPORTED_TOKENS.FLOW ? "Goto Faucet" : "Mint 10k"
                     }

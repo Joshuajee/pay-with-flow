@@ -4,6 +4,7 @@ import LoadingButton from "../utils/LoadingButton"
 import { INCREMENT_ID, SUPPORTED_TOKENS } from "@/libs/enums"
 import getPriceOutput from "@/flow/scripts/incrementFi/getPriceOutput"
 import swapExactToken, { ISwapDetails } from "@/flow/transactions/incrementFi/swapExactToken"
+import { useRouter } from "next/router"
 
 
 interface IProps {
@@ -19,7 +20,11 @@ const IncrementPayBtn = ({ token, requestedToken, amount, address, tx_ref, handC
 
     const [loading, setLoading] = useState(false)
 
-    const [amountToPay, setAmountToPay] = useState(null)
+    const [amountToPay, setAmountToPay] = useState(0)
+
+    const [maxAmountToPay, setMaxAmountToPay] = useState(0)
+
+    const router = useRouter()
 
     const getPrice = useCallback(async() => {
 
@@ -61,7 +66,9 @@ const IncrementPayBtn = ({ token, requestedToken, amount, address, tx_ref, handC
         }
 
         try {
-            setAmountToPay((await getPriceOutput(amount, from, to))[1])
+            const price = (await getPriceOutput(amount, from, to))?.[1]
+            setAmountToPay(price)
+            setMaxAmountToPay(Number(price) * 1.05)
         } catch (e) {
 
         }
@@ -70,6 +77,7 @@ const IncrementPayBtn = ({ token, requestedToken, amount, address, tx_ref, handC
 
     const success = async() => {
         toast.success("Transfer was Successfull")
+        router.push("/pay/success")
         handClose()
     }
 
@@ -80,7 +88,7 @@ const IncrementPayBtn = ({ token, requestedToken, amount, address, tx_ref, handC
     const pay = async() => {
         setLoading(true)
         const details: ISwapDetails = {
-            amountInMax: 2000,
+            amountInMax: maxAmountToPay,
             exactAmountOut: amount,
             path: [INCREMENT_ID.TEUR, INCREMENT_ID.TUSD],
             to: address,
@@ -96,9 +104,15 @@ const IncrementPayBtn = ({ token, requestedToken, amount, address, tx_ref, handC
     }, [])
 
     return (
-        <LoadingButton color="green" loading={loading} onClick={pay}>
-            Pay with {amountToPay} {token} 
-        </LoadingButton>
+        <div>
+            <div className="font-medium">
+                <p className="text-center">Current Price: {amountToPay} {token}  </p>
+                <p className="text-center">Max Price: {maxAmountToPay} {token}  </p>
+            </div>
+            <LoadingButton color="green" loading={loading} onClick={pay}>
+                Pay with {token} 
+            </LoadingButton>
+        </div>
     )
 }
 

@@ -72,7 +72,7 @@ export default function Home(props: IProps) {
   const success = () => {
     toast.success("Transfer Successful")
     setTimeout(() => {
-      router.reload()
+      router.push("/pay/success")
     }, 3000)
   }
 
