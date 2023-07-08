@@ -61,7 +61,7 @@ model Transaction {
 
 model Payment {
   id              Int       @id @default(autoincrement())
-  paymentId       Int
+  paymentId       String
   tx_ref          String     
   amount          Decimal   @default(0)
   requestedToken  Int  @default(0)
