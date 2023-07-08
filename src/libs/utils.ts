@@ -1,6 +1,6 @@
 import { mutate, tx } from "@onflow/fcl"
 import { LINKS } from "./constants"
-import { SUPPORTED_TOKENS } from "./enums"
+import { INCREMENT_ID, SUPPORTED_TOKENS } from "./enums"
 
 export const dollarFormat = (amount: number) => {
     return new Intl.NumberFormat('en-US', {
@@ -84,6 +84,37 @@ export const fromTokenId = (id: number): SUPPORTED_TOKENS => {
             return SUPPORTED_TOKENS.TGBP
         default:
             return SUPPORTED_TOKENS.FLOW
+    }
+}
+
+
+export const getVault = (id: INCREMENT_ID): string => {
+    switch (id) {
+        case INCREMENT_ID.FLOW:
+            return "/storage/flowTokenVault"
+        case INCREMENT_ID.TUSD:
+            return "/storage/tusdVault"
+        case INCREMENT_ID.TEUR:
+            return "/storage/teurVault"
+        case INCREMENT_ID.TGBP:
+            return "/storage/tgbpVault"
+        default:
+            return "/storage/"
+    }
+}
+
+export const getReceiver = (id: INCREMENT_ID): string => {
+    switch (id) {
+        case INCREMENT_ID.FLOW:
+            return "/public/flowTokenReceiver"
+        case INCREMENT_ID.TUSD:
+            return "/public/tusdReceiver"
+        case INCREMENT_ID.TEUR:
+            return "/public/teurReceiver"
+        case INCREMENT_ID.TGBP:
+            return "/public/tgbpReceiver"
+        default:
+            return "/public/"
     }
 }
 

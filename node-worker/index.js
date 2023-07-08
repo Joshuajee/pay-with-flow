@@ -43,7 +43,7 @@ fcl.events(event).subscribe(async(eventData) => {
 
     const payment = await prisma.payment.create({
       data: {
-        paymentId: Number(paymentId),
+        paymentId: String(paymentId),
         amount: Number(amount),
         tx_ref,
         requestedToken: Number(tokenReceived)
@@ -66,7 +66,7 @@ fcl.events(event).subscribe(async(eventData) => {
         })
       }
 
-      await postTransaction(tx_ref, payment) 
+      if (transaction.source === "api") await postTransaction(tx_ref, payment) 
 
     } else {
       await prisma.transaction.create({

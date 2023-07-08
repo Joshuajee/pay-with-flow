@@ -1,5 +1,5 @@
 import { withIronSessionSsr } from 'iron-session/next'
-import { useContext, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import Layout from '@/components/utils/Layout'
 import AuthCard from '@/components/utils/AuthCard'
 import { sessionCookie, validateUser } from '@/services/session'
@@ -8,6 +8,9 @@ import LoadingButtonSM from '@/components/utils/LoadingButtonSM'
 import CreatePaymentForm from '@/components/modals/CreatePaymentForm'
 import { SUPPORTED_TOKENS } from '@/libs/enums'
 import { AuthContext } from '@/contexts/AuthContext'
+import getPriceOutput from '@/flow/scripts/incrementFi/getPriceOutput'
+import { contract } from '@/libs/utils'
+import { compareSync } from 'bcryptjs'
 
 
 export const getServerSideProps = withIronSessionSsr(async({req}) => {
