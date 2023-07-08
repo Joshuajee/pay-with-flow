@@ -35,7 +35,7 @@ fcl.events(event).subscribe(async(eventData) => {
 
   const { paymentId, tx_ref, tokenReceived, amount } = eventData
   
-  //console.log({ paymentId, tx_ref, tokenReceived, amount });
+  console.log("Payment Received: ", amount, "tx_ref: ", tx_ref, " Payment Id: ", paymentId, " Token: ", tokenReceived)
 
   const date = new Date()
 
