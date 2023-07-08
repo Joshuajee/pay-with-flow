@@ -11,7 +11,7 @@ import { generateKey } from "@/services/functions";
 
 
 export default withIronSessionApiRoute(
-    async function verify(req: NextApiRequest, res: NextApiResponse<ApiResponse>) {
+    async function logout(req: NextApiRequest, res: NextApiResponse<ApiResponse>) {
 
         try {
 

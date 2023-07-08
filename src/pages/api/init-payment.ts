@@ -12,9 +12,9 @@ export default withIronSessionApiRoute(
 
         try {
 
-            const { requestedToken, amount, narration, metadata } = req.body
+            const { requestedToken, amount, narration, metadata, redirectUrl } = req.body
 
-            console.log({ requestedToken, amount, narration, metadata })
+            console.log({ requestedToken, amount, narration, metadata, redirectUrl })
 
             const secretKey = req.headers["secret-key"]
 
@@ -38,7 +38,8 @@ export default withIronSessionApiRoute(
                     narration,
                     source: "api",
                     requestedToken: Number(requestedToken),
-                    metadata: metadata
+                    metadata: metadata,
+                    redirectUrl
                 }
             })
 

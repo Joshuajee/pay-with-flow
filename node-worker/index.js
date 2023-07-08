@@ -66,7 +66,7 @@ fcl.events(event).subscribe(async(eventData) => {
         })
       }
 
-      if (transaction.source === "api") await postTransaction(tx_ref, payment) 
+      if (transaction.source == "api") await postTransaction(tx_ref, payment) 
 
     } else {
       await prisma.transaction.create({
