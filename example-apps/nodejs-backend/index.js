@@ -21,12 +21,14 @@ app.post("/pay", async(req, res) => {
 })
 
 app.post("/webhook", async(req, res) => {
-    console.log(req.body)
-    
-    const response = await FlowMerchant.verifyPay(req.body)
-    // Update Database
-    console.log(response)
-    res.send("success")
+    try {
+        const response = await FlowMerchant.verifyPay(req.body)
+        console.log(response)
+        // Update Database
+        res.send("success")
+    } catch (e) {
+        res.status(500).send(e)
+    }
 })
 
 

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Card from '@/components/utils/Card'
 import { toast } from 'react-toastify'
 import { useRouter } from 'next/router'
@@ -16,6 +16,10 @@ export default function Home() {
     const router = useRouter()
 
     const redirect = router?.query?.redirect
+
+    useEffect(() => {
+        if (redirect) router.push(String(redirect))
+    }, [])
 
     return (
         <div className='flex h-screen justify-center items-center'>

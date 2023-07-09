@@ -13,10 +13,11 @@ interface IProps {
     requestedToken: number;
     address: string;
     tx_ref: string;
+    redirect: string | null;
     handClose(): void;
 }
 
-const IncrementPayBtn = ({ token, requestedToken, amount, address, tx_ref, handClose } : IProps) => {
+const IncrementPayBtn = ({ token, requestedToken, amount, address, tx_ref, redirect, handClose } : IProps) => {
 
     const [loading, setLoading] = useState(false)
 
@@ -24,25 +25,29 @@ const IncrementPayBtn = ({ token, requestedToken, amount, address, tx_ref, handC
 
     const [maxAmountToPay, setMaxAmountToPay] = useState(0)
 
-    const router = useRouter()
+    const [from, setFrom] = useState(INCREMENT_ID.FLOW)
+    const [to, setTo] = useState(INCREMENT_ID.TUSD)
+
+    const router = useRouter() 
+
 
     const getPrice = useCallback(async() => {
 
         let from = INCREMENT_ID.FLOW
-        let to =  INCREMENT_ID.TUSD    
-    
-        switch(requestedToken) {
+        let to =  INCREMENT_ID.TUSD   
+
+        switch(Number(requestedToken)) {
             case 0:
-                from = INCREMENT_ID.FLOW
+                to = INCREMENT_ID.FLOW
                 break
             case 1:
-                from = INCREMENT_ID.TUSD
+                to = INCREMENT_ID.TUSD
                 break
             case 2:
-                from = INCREMENT_ID.TEUR
+                to = INCREMENT_ID.TEUR
                 break
             case 3:
-                from = INCREMENT_ID.TGBP
+                to = INCREMENT_ID.TGBP
                 break
             default:
                 console.warn("Token Not Found")
@@ -50,23 +55,27 @@ const IncrementPayBtn = ({ token, requestedToken, amount, address, tx_ref, handC
     
         switch(token) {
             case SUPPORTED_TOKENS.FLOW:
-                to = INCREMENT_ID.FLOW
+                from = INCREMENT_ID.FLOW
                 break
             case SUPPORTED_TOKENS.TUSD:
-                to = INCREMENT_ID.TUSD
+                from = INCREMENT_ID.TUSD
                 break
             case SUPPORTED_TOKENS.TEUR:
-                to = INCREMENT_ID.TEUR
+                from = INCREMENT_ID.TEUR
                 break
             case SUPPORTED_TOKENS.TGBP:
-                to = INCREMENT_ID.TGBP
+                from = INCREMENT_ID.TGBP
                 break
             default:
                 console.warn("Token Not Found")
         }
 
+        setTo(to)
+        setFrom(from)
+
         try {
-            const price = (await getPriceOutput(amount, from, to))?.[1]
+            const price = (await getPriceOutput(amount, from, to))[1]
+            console.log(price)
             setAmountToPay(price)
             setMaxAmountToPay(Number(price) * 1.05)
         } catch (e) {
@@ -77,7 +86,7 @@ const IncrementPayBtn = ({ token, requestedToken, amount, address, tx_ref, handC
 
     const success = async() => {
         toast.success("Transfer was Successfull")
-        router.push("/pay/success")
+        router.push("/pay/success?redirect="+ redirect)
         handClose()
     }
 
@@ -90,7 +99,7 @@ const IncrementPayBtn = ({ token, requestedToken, amount, address, tx_ref, handC
         const details: ISwapDetails = {
             amountInMax: maxAmountToPay,
             exactAmountOut: amount,
-            path: [INCREMENT_ID.TEUR, INCREMENT_ID.TUSD],
+            path: [from, to],
             to: address,
             deadline: (Date.now() / 1000) + 3600,
             tx_ref: tx_ref

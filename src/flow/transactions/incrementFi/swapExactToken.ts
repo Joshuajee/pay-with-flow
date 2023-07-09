@@ -19,6 +19,10 @@ const swapExactToken = async (detail: ISwapDetails, callback?: () => void, errCa
 
     const receiver = getReceiver(path[1])
 
+    console.log(vault, receiver)
+
+    console.log(path)
+
     let pay = null
 
     switch (path[1]) {
@@ -76,7 +80,6 @@ const swapExactToken = async (detail: ISwapDetails, callback?: () => void, errCa
 
     `
 
-
     // const args = (arg: fcl.ArgFn, t: fcl.Types) => [
     //     arg(amountInMax.toFixed(6), t.UFix64), 
     //     arg(exactAmountOut.toFixed(6), t.UFix64), 
@@ -85,9 +88,7 @@ const swapExactToken = async (detail: ISwapDetails, callback?: () => void, errCa
     //     arg(deadline.toFixed(6), t.UFix64)
     // ]
 
-    const args = (arg: fcl.ArgFn, t: fcl.Types) => [
-    ]
-
+    const args = (arg: fcl.ArgFn, t: fcl.Types) => []
 
     await resolveTransaction(cadence, args, callback, errCallback)
 

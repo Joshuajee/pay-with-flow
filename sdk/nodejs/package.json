@@ -1,6 +1,6 @@
 {
   "name": "flow-merchant-sdk-beta",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A simple backend to test flow merchant",
   "main": "index.js",
   "license": "MIT",
