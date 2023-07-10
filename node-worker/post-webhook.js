@@ -6,11 +6,7 @@ const crypto = require('crypto');
 const prisma = new PrismaClient();
 
 
-const postTransaction = async (user, tx_ref, payment) => {
-
-    const transaction = await prisma.transaction.findUnique({ 
-        where: { tx_ref }
-    })
+const postTransaction = async (user, transaction, payment) => {
 
     try {
 
@@ -23,6 +19,8 @@ const postTransaction = async (user, tx_ref, payment) => {
         const body = { transaction, payment, signature }
 
         await axios.post(user.webhookUrl, body)
+
+        console.log("Transaction, posted to Webhook: ", user?.webhookUrl)
 
     } catch (e) {
         console.error(e)

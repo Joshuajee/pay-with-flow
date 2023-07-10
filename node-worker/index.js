@@ -51,13 +51,13 @@ fcl.events(event).subscribe(async(eventData) => {
       }
     })
 
-    const transaction = await prisma.transaction.findFirst({ 
+    let transaction = await prisma.transaction.findFirst({ 
       where: { tx_ref }
     })
 
     if (transaction) {
       if (transaction.requestedToken === Number(tokenReceived)) {
-        await prisma.transaction.update({
+        transaction = await prisma.transaction.update({
           where: {  tx_ref  },
           data: {
             amountPaid: { increment: amount },
@@ -70,15 +70,10 @@ fcl.events(event).subscribe(async(eventData) => {
       const user = await prisma.user.findUnique({
         where: {
           address: transaction?.address
-        },
-        select: {
-          email,
-          webhookUrl
         }
       })
-
     
-      if (transaction.source == "api" && user.webhookUrl) await postTransaction(user, tx_ref, payment)
+      if (transaction.source == "api" && user.webhookUrl) await postTransaction(user, transaction, payment)
       
       if(user?.email) await sendNotification({...transaction, ...payment}, user?.email)
 

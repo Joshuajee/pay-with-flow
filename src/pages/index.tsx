@@ -79,13 +79,15 @@ export default function Home(props: IProps) {
 
       <AuthCard title='Dashboard'>
 
-        <>
+        <div className='overflow-y-auto'>
 
           <div className='flex justify-end mb-5'>
             <div> 
               <LoadingButtonSM onClick={() => setOpen(true)}>Create Transaction</LoadingButtonSM>
             </div>
           </div>
+
+          <h3 className='text-xl mb-4'>Merchant Name: {userProfile?.merchantName} </h3>
 
           <h3 className='text-xl mb-4'>Supported Tokens</h3>
 
@@ -119,7 +121,7 @@ export default function Home(props: IProps) {
 
           </div>
 
-        </>
+        </div>
 
       </AuthCard>
 

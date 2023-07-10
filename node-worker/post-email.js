@@ -19,7 +19,7 @@ const sendReceipt = async (tx_ref, payment) => {
 
   const options = {
     from: "Flow Merchant Notification", // sender address
-    to: "evuetaphajoshua@gmail.com", // receiver email
+    to: "", // receiver email
     subject: "Transaction Received", // Subject line
     text: "message"
     //html: HTML_TEMPLATE(message),
@@ -45,6 +45,7 @@ const sendNotification = async (payload, email) => {
 
   try {
     await transporter.sendMail(options)
+    console.log("Email sent to " , email)
   } catch (error) {
     console.log(error);
   }

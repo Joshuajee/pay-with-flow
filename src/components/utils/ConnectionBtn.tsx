@@ -1,9 +1,6 @@
 import { useAuth } from '@/contexts/AuthContext'
 import { useState } from 'react'
-import { SlLogout } from 'react-icons/sl'
 import { RiLogoutBoxRLine } from 'react-icons/ri'
-import { useRouter } from 'next/router'
-
 
 
 const ConnectionBtn = () => {
@@ -11,8 +8,6 @@ const ConnectionBtn = () => {
     const [show, setShow] = useState(false)
 
     const { currentUser, logOut, logIn } = useAuth()
-
-    console.log(currentUser)
 
     const notAuthenticated = (
         <button 

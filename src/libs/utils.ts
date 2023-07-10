@@ -121,3 +121,15 @@ export const getReceiver = (id: INCREMENT_ID): string => {
 export const getPage = (page: number, take: number = 10) => {
     return { take, skip: (page - 1) * take }
 }
+
+
+export const pageNumbers = (count: number, current: number): any[] => {
+    var shownPages = 3
+    var result = [];
+    if (current > count - shownPages) {
+        result.push(count - 2, count - 1, count);
+    } else {
+        result.push(current, current + 1, current + 2, '...', count);
+    }
+    return result;
+}
