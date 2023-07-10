@@ -54,6 +54,7 @@ model Transaction {
   user            User? @relation(fields: [address], references: [address])
   metadata        Json?
   requestedToken  Int?  @default(0)
+  redirectUrl     String?   @map(name: "redirect_url")
   createdAt       DateTime  @default(now()) @map(name: "created_at")
   paidAt          DateTime?  @updatedAt @map(name: "paid_at")
 }

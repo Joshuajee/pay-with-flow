@@ -1,4 +1,5 @@
 const nodemailer = require("nodemailer");
+const { notification } = require("./email-template/notification");
 require("dotenv").config({ path: "./.env" })
 
 // create reusable transporter object using the default SMTP transport
@@ -16,33 +17,42 @@ const transporter = nodemailer.createTransport({
 
 const sendReceipt = async (tx_ref, payment) => {
 
-    const options = {
-        from: "TESTING <sender@gmail.com>", // sender address
-        to: "evuetaphajoshua@gmail.com", // receiver email
-        subject: "Send email in Node.JS with Nodemailer using Gmail account", // Subject line
-        text: "message"
-        //html: HTML_TEMPLATE(message),
-    }
+  const options = {
+    from: "Flow Merchant Notification", // sender address
+    to: "evuetaphajoshua@gmail.com", // receiver email
+    subject: "Transaction Received", // Subject line
+    text: "message"
+    //html: HTML_TEMPLATE(message),
+  }
 
-    try {
-        const info = await transporter.sendMail(options)
-        callback(info);
-    } catch (error) {
-        console.log(error);
-    }
+  try {
+    const info = await transporter.sendMail(options)
+    callback(info);
+  } catch (error) {
+    console.log(error);
+  }
 
 }
 
-console.log({
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS
-  })
+const sendNotification = async (payload, email) => {
 
+  const options = {
+    from: `Flow Merchant Notification <${process.env.EMAIL_USER}>`, // sender address
+    to: email, // receiver email
+    subject: "Payment Received", // Subject line
+    html: notification(payload),
+  }
 
-sendReceipt()
+  try {
+    await transporter.sendMail(options)
+  } catch (error) {
+    console.log(error);
+  }
 
+}
 
 
 module.exports = {
-    sendReceipt
+  sendNotification,
+  sendReceipt
 }

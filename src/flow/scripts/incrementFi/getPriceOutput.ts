@@ -2,6 +2,9 @@ import { INCREMENT_ID } from "@/libs/enums";
 import * as fcl from "@onflow/fcl";
 
 const getPriceOutput = async (amount: number, from: INCREMENT_ID, to: INCREMENT_ID) => {
+
+    console.log([from, to])
+
     const cadence = `
         import SwapRouter from  0xIncrementFi
     

@@ -70,10 +70,11 @@ export default function Home(props: IProps) {
   }
 
   const success = () => {
-    toast.success("Transfer Successful")
-    setTimeout(() => {
-      router.push("/pay/success")
-    }, 3000)
+    router.push("/pay/success?redirect=" + data.redirectUrl)
+    // toast.success("Transfer Successful")
+    // setTimeout(() => {
+    //   router.push("/pay/success?redirect=" + data.r)
+    // }, 3000)
   }
 
   const error = () => {
@@ -176,7 +177,7 @@ export default function Home(props: IProps) {
 
       </Card>
 
-      <IncrementFIModal address={data.address as string} tx_ref={data.tx_ref} amount={Number(amount)} open={open} handleClose={handleClose} token={data?.requestedToken} />
+      <IncrementFIModal redirect={data?.redirectUrl} address={data.address as string} tx_ref={data.tx_ref} amount={Number(amount)} open={open} handleClose={handleClose} token={data?.requestedToken} />
 
     </Layout>
   )
