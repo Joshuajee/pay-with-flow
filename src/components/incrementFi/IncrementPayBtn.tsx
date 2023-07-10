@@ -5,6 +5,10 @@ import { INCREMENT_ID, SUPPORTED_TOKENS } from "@/libs/enums"
 import getPriceOutput from "@/flow/scripts/incrementFi/getPriceOutput"
 import swapExactToken, { ISwapDetails } from "@/flow/transactions/incrementFi/swapExactToken"
 import { useRouter } from "next/router"
+import getFlowBalance from "@/flow/scripts/getFlowBalance"
+import getTUSDBalance from "@/flow/scripts/getTUSDBalance"
+import getTEURBalance from "@/flow/scripts/getTEURBalance"
+import getTGBPBalance from "@/flow/scripts/getTGBPBalance "
 
 
 interface IProps {
@@ -24,6 +28,8 @@ const IncrementPayBtn = ({ token, requestedToken, amount, address, tx_ref, redir
     const [amountToPay, setAmountToPay] = useState(0)
 
     const [maxAmountToPay, setMaxAmountToPay] = useState(0)
+
+    const [balance, setBalance] = useState(null)
 
     const [from, setFrom] = useState(INCREMENT_ID.FLOW)
     const [to, setTo] = useState(INCREMENT_ID.TUSD)
@@ -56,15 +62,19 @@ const IncrementPayBtn = ({ token, requestedToken, amount, address, tx_ref, redir
         switch(token) {
             case SUPPORTED_TOKENS.FLOW:
                 from = INCREMENT_ID.FLOW
+                setBalance(await getFlowBalance(address))
                 break
             case SUPPORTED_TOKENS.TUSD:
                 from = INCREMENT_ID.TUSD
+                setBalance(await getTUSDBalance(address))
                 break
             case SUPPORTED_TOKENS.TEUR:
                 from = INCREMENT_ID.TEUR
+                setBalance(await getTEURBalance(address))
                 break
             case SUPPORTED_TOKENS.TGBP:
                 from = INCREMENT_ID.TGBP
+                setBalance(await getTGBPBalance(address))
                 break
             default:
                 console.warn("Token Not Found")
@@ -73,9 +83,11 @@ const IncrementPayBtn = ({ token, requestedToken, amount, address, tx_ref, redir
         setTo(to)
         setFrom(from)
 
+
+        console.log({amount, from, to})
+
         try {
-            const price = (await getPriceOutput(amount, from, to))[1]
-            console.log(price)
+            const price = (await getPriceOutput(amount, to, from))[1]
             setAmountToPay(price)
             setMaxAmountToPay(Number(price) * 1.05)
         } catch (e) {
@@ -117,6 +129,7 @@ const IncrementPayBtn = ({ token, requestedToken, amount, address, tx_ref, redir
             <div className="font-medium">
                 <p className="text-center">Current Price: {amountToPay} {token}  </p>
                 <p className="text-center">Max Price: {maxAmountToPay} {token}  </p>
+                <p className="text-center">Balance: {balance} {token}  </p>
             </div>
             <LoadingButton color="green" loading={loading} onClick={pay}>
                 Pay with {token} 

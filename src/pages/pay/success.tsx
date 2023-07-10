@@ -18,9 +18,10 @@ export default function Home() {
     const redirect = router?.query?.redirect
 
     useEffect(() => {
+        console.log(redirect)
         setTimeout(() => {
-            if (redirect != null) router.push(String(redirect))
-        }, 3000)
+            if (redirect != "null") router.push(String(redirect))
+        }, 6000)
     }, [])
 
     return (

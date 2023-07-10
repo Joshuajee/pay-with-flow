@@ -2,7 +2,7 @@ import { withIronSessionSsr } from 'iron-session/next'
 import '@/flow/config'
 import Layout from '@/components/utils/Layout'
 import { sessionCookie, validateUser } from '@/services/session'
-import { useState } from 'react'
+import { useCallback, useContext, useEffect, useState } from 'react'
 import prisma from '@/libs/prisma'
 import Card from '@/components/utils/Card'
 import { Transaction } from '@prisma/client'
@@ -14,6 +14,12 @@ import { fromTokenId } from '@/libs/utils'
 import { toast } from 'react-toastify'
 import { useRouter } from 'next/router'
 import IncrementFIModal from '@/components/incrementFi/IncrementFIModal'
+import { SUPPORTED_TOKENS } from '@/libs/enums'
+import { AuthContext } from '@/contexts/AuthContext'
+import getFlowBalance from '@/flow/scripts/getFlowBalance'
+import getTUSDBalance from '@/flow/scripts/getTUSDBalance'
+import getTEURBalance from '@/flow/scripts/getTEURBalance'
+import getTGBPBalance from '@/flow/scripts/getTGBPBalance '
 
 
 export const getServerSideProps = withIronSessionSsr(async({req, params}) => {
@@ -48,13 +54,22 @@ interface IProps {
 
 export default function Home(props: IProps) {
 
+  const { currentUser } = useContext(AuthContext)
+
   const router = useRouter()
 
   const data: Transaction = JSON.parse(props.data)
 
+  const token = fromTokenId(Number(data?.requestedToken))
+
   const amount = Number(data.amount).toFixed(4)
 
   const [open, setOpen] = useState(false)
+
+  const [balance, setBalance] = useState(null)
+
+  const [loading, setLoading] = useState(false)
+
 
   const handleClose = () => {
     setOpen(false)
@@ -70,11 +85,7 @@ export default function Home(props: IProps) {
   }
 
   const success = () => {
-    router.push("/pay/success?redirect=" + data.redirectUrl)
-    // toast.success("Transfer Successful")
-    // setTimeout(() => {
-    //   router.push("/pay/success?redirect=" + data.r)
-    // }, 3000)
+    router.push("/pay/success?redirect=" + data?.redirectUrl)
   }
 
   const error = () => {
@@ -124,6 +135,35 @@ export default function Home(props: IProps) {
 
   }
 
+  const getBalance = useCallback(async() => {
+
+    const address = currentUser.addr
+
+    if (!address) return
+
+    switch (token) {
+      case SUPPORTED_TOKENS.FLOW:
+        setBalance((await getFlowBalance(address)) || 0)
+        break
+      case SUPPORTED_TOKENS.TUSD:
+        setBalance((await getTUSDBalance(address)) || 0)
+        break
+      case SUPPORTED_TOKENS.TEUR:
+        setBalance((await getTEURBalance(address)) || 0)
+        break
+      case SUPPORTED_TOKENS.TGBP:
+        setBalance((await getTGBPBalance(address)) || 0)
+        break
+      default:
+        setBalance(null)
+    }
+
+  }, [currentUser?.addr])
+
+  useEffect(() => {
+    getBalance()
+  }, [getBalance])
+
   return (
     <Layout hideSidebar={true} nonce={props.nonce}>
 
@@ -134,6 +174,10 @@ export default function Home(props: IProps) {
           { data &&
 
             <div className=''>
+
+              {
+                currentUser?.addr &&  <div className='text-center text-2xl w-full font-semibold mb-5'>Balance : {balance} {token} </div>
+              }
 
               <div className='border-[1px] p-4 rounded-md w-full max-w-[600px]'>
 

@@ -1,4 +1,4 @@
-import { getPage } from "@/libs/utils"
+import { getPage, pageNumbers } from "@/libs/utils"
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -20,25 +20,14 @@ const TableNav = (props: IProps) => {
     const router = useRouter()
 
     useEffect(() => {
-
-        const pages = []
-
-        const start = counts - page > 5 ? page : 0
-
-        const end = counts - start > 5 ? start + 5 : 0
-
-        for (let i = start; i < end; i++) {
-            pages.push(i)
-        }
-
+        const pageCount = Math.ceil(counts / 10)        
+        const pages = pageNumbers(pageCount, page)
         setPages(pages)
-
         setLastPage(1)
-
     }, [counts, page])
 
     return (
-        <nav className="flex items-center justify-between pt-4" aria-label="ContactTable navigation">
+        <nav className="flex items-center justify-between p-4" aria-label="ContactTable navigation">
             <span className="text-sm font-normal">Showing <span className="font-semibold ">{skip + 1}-{(take + skip) < counts ? (take + skip) : counts }</span> of <span className="font-semibold">{counts}</span></span>
             <ul className="inline-flex items-center -space-x-px">
                 {   page > 1 &&

@@ -27,7 +27,7 @@ const swapExactToken = async (detail: ISwapDetails, callback?: () => void, errCa
 
     switch (path[1]) {
         case INCREMENT_ID.FLOW:
-            pay = `outReceiverRef.depositFlow(from: <-vaultOut, tx_ref: "${tx_ref}")`
+            pay = `outReceiverRef.depositFlowToken(from: <-vaultOut, tx_ref: "${tx_ref}")`
             break
         case INCREMENT_ID.TUSD:
             pay = `outReceiverRef.depositTUSD(from: <-vaultOut, tx_ref: "${tx_ref}")`
