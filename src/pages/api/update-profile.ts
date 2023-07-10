@@ -9,36 +9,30 @@ import { generateKey } from "@/services/functions";
 
 
 export default withIronSessionApiRoute(
-    async function verify(req: NextApiRequest, res: NextApiResponse<ApiResponse>) {
+    async function updateProfile(req: NextApiRequest, res: NextApiResponse<ApiResponse>) {
+
+        const { email } = req.body
 
         try {
 
-            const data = JSON.parse(req.body.data)
+            const  { user }  = await validateUserApi(req)
 
-            console.log(data)
+            if (!user) return new ServerError(res, 401, "Unauthorized")
 
-            let user = await prisma.user.findUnique({
+
+            await prisma.user.update({
                 where: {
-                    address: data.address
+                    address: user.address
+                },
+                data: {
+                    email
                 }
             })
-
-            if (!user) {
-                user = await prisma.user.create({
-                    data: {
-                        address: data.address,
-                        secretKey: generateKey("secret"),
-                        publicKey: generateKey("public")
-                    }
-                })
-            }
-
-            await createUserSession(user, req)
     
             return res.send({ 
                 status: 'success', 
                 statusCode: 200,
-                message: "Verified successfully",
+                message: "Updated successfully",
                 data: null
             });
             
