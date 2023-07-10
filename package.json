@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "build-netlify": "prisma generate && next build",
-    "start-emulator": "flow emulator -v"
+    "start-emulator": "flow emulator -v",
+    "deploy:worker": "git subtree push --prefix node-worker heroku main"
   },
   "dependencies": {
     "@lottiefiles/lottie-player": "^2.0.2",
