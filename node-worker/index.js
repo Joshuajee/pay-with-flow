@@ -10,7 +10,7 @@ const prisma = new PrismaClient();
 
 fcl.config({
   "accessNode.api": process.env.NEXT_PUBLIC_ACCESS_NODE_API,
-  "fcl.eventPollRate": 1000
+  "fcl.eventPollRate": 5000
 })
  
 const contractAddress = String(process.env.NEXT_PUBLIC_CONTRACT_ACCT).substring(2);

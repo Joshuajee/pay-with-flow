@@ -1,6 +1,7 @@
 import { PROJECT_NAME } from "@/libs/constants";
 import { LOCAL_STORAGE } from "@/libs/enums";
 import { config } from "@onflow/fcl";
+import logo from "@/img/logo.png"
 
 const resolver = async () => {
   return {
@@ -10,10 +11,11 @@ const resolver = async () => {
 }
 
 config({
+  "app.detail.icon": logo, 
   "app.detail.title": "Flow Merchant",
   "accessNode.api": process.env.NEXT_PUBLIC_ACCESS_NODE_API,
   "discovery.wallet": process.env.NEXT_PUBLIC_DISCOVERY_WALLET,
-  "fcl.eventPollRate": 3000,
+  "fcl.eventPollRate": 5000,
   // "fcl.accountProof.resolver": resolver,
   "network": "testnet",
   "0xFlowMerchant": process.env.NEXT_PUBLIC_CONTRACT_ACCT,
