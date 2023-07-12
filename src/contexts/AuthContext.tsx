@@ -72,17 +72,19 @@ export default function AuthProvider({ children } : IProps) {
     //   }
     // }
 
-    try {
-      await axios.post(
-        API_ROUTES.VERIFY_TEST, 
-        { data: JSON.stringify({address: account?.addr}) }
-      )
-    } catch (e) {
-      if (axios.isAxiosError(e)) {
-        toast.error(e?.response?.data?.message)
-      } else {
-        toast.error("An error occurred")
-        console.error(e);
+    if (account?.addr) {
+      try {
+        await axios.post(
+          API_ROUTES.VERIFY_TEST, 
+          { data: JSON.stringify({address: account?.addr}) }
+        )
+      } catch (e) {
+        if (axios.isAxiosError(e)) {
+          toast.error(e?.response?.data?.message)
+        } else {
+          toast.error("An error occurred")
+          console.error(e);
+        }
       }
     }
   }
