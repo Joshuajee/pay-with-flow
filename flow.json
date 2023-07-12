@@ -7,6 +7,12 @@
 			  "emulator": "ee82856bf20e2aa6"
 			}
 		},
+		"FlowToken": {
+			"aliases": {
+			  "testnet": "0x7e60df042a9c0868",
+			  "emulator": "ee82856bf20e2aa6"
+			}
+		},
 		"TUSD": "./flow/cadence/contracts/TestTokens/TUSD.cdc",
 		"TGBP": "./flow/cadence/contracts/TestTokens/TGBP.cdc",
 		"TEUR": "./flow/cadence/contracts/TestTokens/TEUR.cdc",

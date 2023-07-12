@@ -70,7 +70,7 @@ export default function Home(props: IProps) {
 
 
   useEffect(() => {
-    email.setValue(user.email)
+    email.setValue(user?.email)
   }, [])
 
 

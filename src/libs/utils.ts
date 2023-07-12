@@ -38,7 +38,7 @@ export const resolveTransaction = async (cadence: string, args: any, callback?: 
 
     try {
 
-        const limit = 5000;
+        const limit = 1000;
 
         const txId = await mutate({ cadence, args, limit });
       
