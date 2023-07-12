@@ -99,7 +99,8 @@ pub contract TEUR: FungibleToken {
     }
 
     pub fun mintTokens(): @TEUR.Vault {
-        return <-create Vault(balance: 10000.0)
+        TEUR.totalSupply = TEUR.totalSupply + 1000.0 
+        return <-create Vault(balance: 1000.0)
     }
 
     // Minter
