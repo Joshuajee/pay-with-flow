@@ -62,11 +62,16 @@ model Transaction {
 
 model Payment {
   id              Int       @id @default(autoincrement())
-  paymentId       String
+  paymentId       Int       @unique
   tx_ref          String     
   amount          Decimal   @default(0)
   requestedToken  Int  @default(0)
   userId          Int?
   user            User? @relation(fields: [userId], references: [id])
   createdAt       DateTime  @default(now()) @map(name: "created_at")
+}     
+
+model Block {
+  id              Int       @id @default(autoincrement())
+  height          Int 
 }

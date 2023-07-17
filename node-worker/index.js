@@ -7,6 +7,7 @@ const { sendNotification } = require('./post-email')
 
 const prisma = new PrismaClient();
 
+const initialBlockHeight = 111029830
 
 fcl.config({
   "accessNode.api": process.env.NEXT_PUBLIC_ACCESS_NODE_API,
@@ -32,19 +33,24 @@ console.log(
   `Listening for event "${eventName}" from "${contractName}" deployed on account 0x${contractAddress}`
 );
 
-fcl.events(event).subscribe(async(eventData) => {
+const eventWorker = async(eventData) => {
 
-  const { paymentId, tx_ref, tokenReceived, amount } = eventData
-  
+  const values = eventData?.payload?.value?.fields
+
+  const paymentId = values?.[0]?.value?.value
+  const tx_ref = values?.[1]?.value?.value
+  const tokenReceived = values?.[2]?.value?.value
+  const amount = values?.[3]?.value?.value
+    
   console.log("Payment Received: ", amount, "tx_ref: ", tx_ref, " Payment Id: ", paymentId, " Token: ", tokenReceived)
-
+  
   const date = new Date()
 
   try {
 
     const payment = await prisma.payment.create({
       data: {
-        paymentId: String(paymentId),
+        paymentId: Number(paymentId),
         amount: Number(amount),
         tx_ref,
         requestedToken: Number(tokenReceived)
@@ -96,5 +102,65 @@ fcl.events(event).subscribe(async(eventData) => {
 
   }
 
-});
+}
+
+
+
+const flowEvent = async() => {
+
+  try {
+
+    let start = initialBlockHeight
+
+    const lastRecordedBlock = await prisma.block.findMany({
+      orderBy: {
+        id: 'desc',
+      },
+      take: 1,
+      select: {
+        height: true
+      }
+    })
+
+
+    if (lastRecordedBlock?.[0]) {
+      start = lastRecordedBlock?.[0]?.height 
+    }
+
+    const lastestBlock = await fcl.send(
+      [fcl.getBlock(true)]
+    ).then(fcl.decode);
+
+    let end = lastestBlock.height
+
+    console.log("Last Recorded Block: ", start, " Current Block: ", end)
+     
+    if ((end - start) > 200) {
+      end = start + 200
+    }
+
+    const response = await fcl.send(
+      [fcl.getEventsAtBlockHeightRange(event, start, end)]
+    )
+
+    const events = response.events
+
+    for await (const event of events) {
+      eventWorker(event)
+    }
+     
+    await prisma.block.create({
+      data: {
+        height: end
+      }
+    })
+
+  } catch (e) {
+    console.error(e)
+  }    
+
+}
+     
+setInterval(flowEvent, 20000);
+
 
